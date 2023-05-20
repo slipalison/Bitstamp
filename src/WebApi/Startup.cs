@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System.Net.WebSockets;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 using Domain.Contracts.Services;
 using Domain.Services;
@@ -6,6 +7,7 @@ using Infra.ConfigsExtensions;
 using Infra.Databases.SqlServers.BitstampData.Extensions;
 using Infra.MassTransitConfiguration;
 using Infra.Middlewares;
+using Infra.WebSockets;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.OpenApi.Models;
 
@@ -55,10 +57,16 @@ public class Startup
             .HealthChecksConfiguration(_configuration)
             .AddUCondoContext(_configuration)
             .AddDomainServices();
+
+        services.AddTransient<BtcUsdOrderBookService>();
+        services.AddTransient<ClientWebSocket>();
+        services.AddHostedService<BtcUsdOrderBookHostedService>();
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
+        
+
         app.UseCors(builder => builder
             .AllowAnyOrigin()
             .AllowAnyMethod()
