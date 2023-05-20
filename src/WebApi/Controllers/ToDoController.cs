@@ -14,10 +14,9 @@ public class ToDoController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<ToDoItemEntity>>> GetAll()
+    public async Task<ActionResult> GetAll()
     {
         return Ok();
     }
-
 
 }

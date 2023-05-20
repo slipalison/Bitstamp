@@ -2,7 +2,7 @@
 
 namespace Domain.Contracts.Repositories;
 
-public interface IBitstampRepository
+public interface IBitstampRepository<TEntity> where TEntity : class
 {
     //Task<List<ToDoItemEntity>> GetAll(CancellationToken cancellationToken = default);
     //Task<ToDoItemEntity> Create(ToDoItemEntity accountPlanEntity, CancellationToken cancellationToken = default);

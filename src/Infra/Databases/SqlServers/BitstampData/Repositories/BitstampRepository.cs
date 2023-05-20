@@ -5,57 +5,48 @@ using Responses;
 
 namespace Infra.Databases.SqlServers.BitstampData.Repositories;
 
-public class BitstampRepository : IBitstampRepository
+public abstract class BitstampRepository<TEntity> : IBitstampRepository<TEntity> where TEntity : class
 {
     private readonly BitstampContext _context;
-
+    private readonly DbSet<TEntity> _dbSet;
     public BitstampRepository(BitstampContext BitstampContext)
     {
         _context = BitstampContext;
+        _dbSet= _context.Set<TEntity>();
     }
 
-    public Task<List<ToDoItemEntity>> GetAll(CancellationToken cancellationToken = default)
-    {
-        return _context.ToDos.ToListAsync(cancellationToken);
-    }
+    //public Task<List<TEntity>> GetAll(CancellationToken cancellationToken = default)
+    //{
+    //    return _context.ToDos.ToListAsync(cancellationToken);
+    //}
 
-    public async Task<ToDoItemEntity> Create(ToDoItemEntity accountPlanEntity,
-        CancellationToken cancellationToken = default)
-    {
-        var ent = await _context.AddAsync(accountPlanEntity, cancellationToken);
-        await _context.SaveChangesAsync(cancellationToken);
+    //public async Task<TEntity> Create(TEntity accountPlanEntity,
+    //    CancellationToken cancellationToken = default)
+    //{
+    //    var ent = await _context.AddAsync(accountPlanEntity, cancellationToken);
+    //    await _context.SaveChangesAsync(cancellationToken);
 
-        return ent.Entity;
-    }
+    //    return ent.Entity;
+    //}
 
-    public async Task<Result<ToDoItemEntity>> Update(ToDoItemEntity entity, CancellationToken cancellationToken = default)
-    {
-        var entitie =
-            await _context.ToDos.FindAsync(new object?[] { entity.Id },
-                cancellationToken: cancellationToken);
+    //public async Task<Result<TEntity>> Update(TEntity entity, CancellationToken cancellationToken = default)
+    //{
+       
+    //    await _context.SaveChangesAsync(cancellationToken);
 
-        if (entitie == null) return Result.Fail<ToDoItemEntity>("404", "Tarefa não encontrada");
-
-        entitie.Deadline = entity.Deadline;
-        entitie.Name = entity.Name;
-        entitie.Status = entity.Status;
-        _context.ToDos.Update(entitie);
-
-        await _context.SaveChangesAsync(cancellationToken);
-
-        return Result.Ok(entitie);
-    }
+    //    return Result.Ok();
+    //}
 
     public async Task<Result> Delete(Guid id, CancellationToken cancellationToken = default)
     {
-        var entitie =
-            await _context.ToDos.FindAsync(new object?[] { id },
-                cancellationToken: cancellationToken);
+        //var entitie =
+        //    await _context.ToDos.FindAsync(new object?[] { id },
+        //        cancellationToken: cancellationToken);
 
-        if (entitie == null) return Result.Fail("404", "Tarefa não encontrada");
+        //if (entitie == null) return Result.Fail("404", "Tarefa não encontrada");
 
-        _context.ToDos.Remove(entitie);
-        await _context.SaveChangesAsync(cancellationToken);
+        //_context.ToDos.Remove(entitie);
+        //await _context.SaveChangesAsync(cancellationToken);
 
         return Result.Ok();
     }
