@@ -3,9 +3,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
+
 namespace Infra.Databases.SqlServers.BitstampData.Configurations;
 
-public class ToDoItemEntityConfiguration : IEntityTypeConfiguration<ToDoItemEntity>
+public class BitstampEntityConfiguration : IEntityTypeConfiguration<ToDoItemEntity>
 {
     public void Configure(EntityTypeBuilder<ToDoItemEntity> builder)
     {

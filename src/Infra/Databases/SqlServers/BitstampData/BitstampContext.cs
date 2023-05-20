@@ -1,8 +1,6 @@
 ﻿using Domain.ToDoItems;
-using Infra.Databases.SqlServers.BitstampData.Configurations;
 using Microsoft.EntityFrameworkCore;
-
-#pragma warning disable CS8618
+using Infra.Databases.SqlServers.BitstampData.Configurations;
 
 namespace Infra.Databases.SqlServers.BitstampData;
 
@@ -16,6 +14,6 @@ public class BitstampContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.ApplyConfiguration(new ToDoItemEntityConfiguration());
+        modelBuilder.ApplyConfiguration(new BitstampEntityConfiguration());
     }
 }

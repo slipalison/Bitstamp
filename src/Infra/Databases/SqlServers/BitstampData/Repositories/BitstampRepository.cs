@@ -3,6 +3,7 @@ using Domain.ToDoItems;
 using Microsoft.EntityFrameworkCore;
 using Responses;
 
+
 namespace Infra.Databases.SqlServers.BitstampData.Repositories;
 
 public class BitstampRepository : IBitstampRepository

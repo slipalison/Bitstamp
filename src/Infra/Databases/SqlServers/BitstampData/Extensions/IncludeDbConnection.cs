@@ -7,14 +7,15 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Infra.Databases.SqlServers.BitstampData.Extensions;
 
-public static class IncludeUCondoConnection
+public static class IncludeDbConnection
 {
-    public static IServiceCollection AddUCondoContext(this IServiceCollection serviceCollection,
+    public static IServiceCollection AddDbContext(this IServiceCollection serviceCollection,
         IConfiguration configuration)
     {
         serviceCollection
-            .AddDbContextPool<BitstampContext>(options =>
-                options.UseSqlServer(configuration.GetConnectionString("SqlServer"))).AddRepositories();
+            .AddDbContext<BitstampContext>(options =>
+                options.UseSqlServer(configuration.GetConnectionString("SqlServer")), ServiceLifetime.Transient)
+            .AddRepositories();
 
         return serviceCollection;
     }

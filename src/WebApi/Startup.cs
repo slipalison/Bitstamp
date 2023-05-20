@@ -55,12 +55,14 @@ public class Startup
 
         services.AddMassTransitWithRabbitMq(_configuration)
             .HealthChecksConfiguration(_configuration)
-            .AddUCondoContext(_configuration)
+            .AddDbContext(_configuration)
             .AddDomainServices();
 
-        services.AddTransient<BtcUsdOrderBookService>();
+        services.AddTransient<IBtcUsdOrderBookService, BtcUsdOrderBookService>();
+        services.AddTransient<IEthUsdOrderBookService, EthUsdOrderBookService>();
         services.AddTransient<ClientWebSocket>();
-        services.AddHostedService<BtcUsdOrderBookHostedService>();
+        //services.AddHostedService<BtcUsdOrderBookHostedService>();
+        services.AddHostedService<EthUsdOrderBookHostedService>();
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
