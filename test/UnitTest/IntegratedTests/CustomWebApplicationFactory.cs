@@ -1,7 +1,6 @@
 ﻿using System.Data.Common;
 using Infra.Databases.SqlServers.BitstampData;
 using Infra.MassTransitConfiguration;
-using Infra.MassTransitConfiguration.Consumers;
 using MassTransit;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;

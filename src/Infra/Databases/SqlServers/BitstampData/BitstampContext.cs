@@ -1,5 +1,4 @@
-﻿using Domain.ToDoItems;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Infra.Databases.SqlServers.BitstampData.Configurations;
 
 namespace Infra.Databases.SqlServers.BitstampData;

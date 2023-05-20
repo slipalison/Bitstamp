@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Domain.Commands;
+using Microsoft.Extensions.Logging;
 using System.Net.WebSockets;
 using System.Text;
 using System.Text.Json;

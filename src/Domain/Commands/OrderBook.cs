@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace Infra.WebSockets
+namespace Domain.Commands
 {
     public record OrderBook(
         [property: JsonPropertyName("data")] Data Data,

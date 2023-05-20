@@ -1,4 +1,6 @@
-﻿namespace Infra.WebSockets
+﻿using Domain.Commands;
+
+namespace Infra.WebSockets
 {
     public interface IOrderBookService
     {

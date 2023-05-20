@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Domain.Commands;
+using Microsoft.Extensions.Logging;
 using System.Net.WebSockets;
 
 namespace Infra.WebSockets
