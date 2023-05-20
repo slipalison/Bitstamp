@@ -30,7 +30,7 @@ public class Program
                     {
                         AutoRegisterTemplate = true,
                         AutoRegisterTemplateVersion = AutoRegisterTemplateVersion.ESv7,
-                        IndexFormat = "baseapi-{0:yyyy.MM}"
+                        IndexFormat = "webapi-{0:yyyy.MM}"
                     })
                     .Enrich.WithProperty("Environment", Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")!)
                     .ReadFrom.Configuration(context.Configuration);
