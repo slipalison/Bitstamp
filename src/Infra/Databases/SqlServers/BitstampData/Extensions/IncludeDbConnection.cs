@@ -24,6 +24,8 @@ public static class IncludeDbConnection
     {
         serviceCollection.AddScoped<IEthAskRepository, EthAskRepository>();
         serviceCollection.AddScoped<IEthBidRepository, EthBidRepository>();
+        serviceCollection.AddScoped<IBtcAskRepository, BtcAskRepository>();
+        serviceCollection.AddScoped<IBtcBidRepository, BtcBidRepository>();
     }
 
     public static void ExecuteMigartions(this IApplicationBuilder app)

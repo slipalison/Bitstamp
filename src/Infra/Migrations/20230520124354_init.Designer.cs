@@ -4,6 +4,7 @@ using Infra.Databases.SqlServers.BitstampData;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infra.Migrations
 {
     [DbContext(typeof(BitstampContext))]
-    partial class BitstampContextModelSnapshot : ModelSnapshot
+    [Migration("20230520124354_init")]
+    partial class init
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -53,9 +56,6 @@ namespace Infra.Migrations
 
                     b.HasIndex("Price");
 
-                    b.HasIndex("Amount", "Price")
-                        .IsUnique();
-
                     b.ToTable("BtcAsks");
                 });
 
@@ -89,9 +89,6 @@ namespace Infra.Migrations
                     b.HasIndex("InsertAt");
 
                     b.HasIndex("Price");
-
-                    b.HasIndex("Amount", "Price")
-                        .IsUnique();
 
                     b.ToTable("BtcBids");
                 });
@@ -127,9 +124,6 @@ namespace Infra.Migrations
 
                     b.HasIndex("Price");
 
-                    b.HasIndex("Amount", "Price")
-                        .IsUnique();
-
                     b.ToTable("EthAsks");
                 });
 
@@ -163,9 +157,6 @@ namespace Infra.Migrations
                     b.HasIndex("InsertAt");
 
                     b.HasIndex("Price");
-
-                    b.HasIndex("Amount", "Price")
-                        .IsUnique();
 
                     b.ToTable("EthBids");
                 });

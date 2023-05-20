@@ -13,6 +13,9 @@ public class BitstampContext : DbContext
     public DbSet<EthBid> EthBids { get; set; }
     public DbSet<EthAsk> EthAsks { get; set; }
 
+    public DbSet<BtcBid> BtcBids { get; set; }
+    public DbSet<BtcAsk> BtcAsks { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(EthBidEntityConfiguration).Assembly);

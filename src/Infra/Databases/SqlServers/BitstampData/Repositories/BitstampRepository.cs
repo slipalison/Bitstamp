@@ -8,28 +8,7 @@ using Responses;
 
 namespace Infra.Databases.SqlServers.BitstampData.Repositories;
 
-
-public class EthAskRepository : BitstampRepository<EthAsk>, IEthAskRepository
-{
-    public EthAskRepository(BitstampContext BitstampContext) : base(BitstampContext)
-    {
-    }
-}
-
-public class EthBidRepository : BitstampRepository<EthBid>, IEthBidRepository
-{
-    public EthBidRepository(BitstampContext BitstampContext) : base(BitstampContext)
-    {
-    }
-}
-
-public interface IEthAskRepository: IBitstampRepository<EthAsk>
-{
-}
-public interface IEthBidRepository : IBitstampRepository<EthBid>
-{
-}
-public abstract class BitstampRepository<TEntity> : IBitstampRepository<TEntity> where TEntity : class
+public abstract class BitstampRepository<TEntity> : IBitstampRepository<TEntity> where TEntity : BaseItemBook<TEntity>, new()
 {
     private readonly BitstampContext _context;
     private readonly DbSet<TEntity> _dbSet;
@@ -39,11 +18,37 @@ public abstract class BitstampRepository<TEntity> : IBitstampRepository<TEntity>
         _dbSet = _context.Set<TEntity>();
     }
 
-    public async Task InsertRange(List<TEntity> entities, CancellationToken cancellationToken)
+    public async Task InsertOrUpdateRangeAsync(List<TEntity> entities, CancellationToken cancellationToken)
     {
         using var transaction = await _context.Database.BeginTransactionAsync(cancellationToken);
-        await _context.BulkInsertAsync(entities, cancellationToken: cancellationToken);
-        await transaction.CommitAsync(cancellationToken);
+        try
+        {
+
+            var timestamp = entities.First().Timestamp;
+            var microtimestamp = entities.First().Microtimestamp;
+
+            for (int i = 0; i < entities.Count; i++)
+            {
+                TEntity? e = entities[i];
+                var en = await _dbSet.FirstOrDefaultAsync(a => a.Amount == e.Amount && a.Price == e.Price, cancellationToken);
+                if (en != null)
+                {
+                    var up = en.UpdateTimeStamp(timestamp, microtimestamp);
+                    _context.Update(up);
+                    entities.RemoveAll(a => up.Amount == a.Amount && up.Price == a.Price);
+                    i--;
+                }
+            }
+            await _context.BulkInsertAsync(entities, cancellationToken: cancellationToken);
+            await _context.SaveChangesAsync(cancellationToken);
+            await transaction.CommitAsync(cancellationToken);
+
+        }
+        catch (Exception e)
+        {
+
+       
+        }
 
     }
 
@@ -83,3 +88,4 @@ public abstract class BitstampRepository<TEntity> : IBitstampRepository<TEntity>
         return Result.Ok();
     }
 }
+

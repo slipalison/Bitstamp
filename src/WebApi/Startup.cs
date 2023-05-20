@@ -8,6 +8,7 @@ using Infra.Databases.SqlServers.BitstampData.Extensions;
 using Infra.MassTransitConfiguration;
 using Infra.Middlewares;
 using Infra.WebSockets;
+using Infra.WebSockets.HostedServices;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.OpenApi.Models;
 
@@ -61,7 +62,7 @@ public class Startup
         services.AddTransient<IBtcUsdOrderBookService, BtcUsdOrderBookService>();
         services.AddTransient<IEthUsdOrderBookService, EthUsdOrderBookService>();
         services.AddTransient<ClientWebSocket>();
-        //services.AddHostedService<BtcUsdOrderBookHostedService>();
+        services.AddHostedService<BtcUsdOrderBookHostedService>();
         services.AddHostedService<EthUsdOrderBookHostedService>();
     }
 

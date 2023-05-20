@@ -2,7 +2,7 @@
 
 namespace Domain.Models
 {
-    public abstract class Eth<T> where T : Eth<T>, new()
+    public abstract class BaseItemBook<T> where T : BaseItemBook<T>, new()
     {
         public Guid Id { get; set; } = Guid.NewGuid();
         public DateTimeOffset InsertAt { get; set; }
@@ -23,6 +23,15 @@ namespace Domain.Models
                 Timestamp = long.Parse(orderBook.Data.Timestamp),
                 InsertAt = DateTimeOffset.FromUnixTimeMilliseconds(long.Parse(orderBook.Data.Microtimestamp) / 1000)
             }).ToList();
+        }
+
+        public T UpdateTimeStamp(long timestamp, long microtimestamp)
+        {
+            Timestamp = timestamp;
+            Microtimestamp = microtimestamp;
+            InsertAt = DateTimeOffset.FromUnixTimeMilliseconds(microtimestamp / 1000);
+
+            return (T)this;
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace Infra.WebSockets
+namespace Infra.WebSockets.HostedServices
 {
     public class EthUsdOrderBookHostedService : BackgroundService
     {
@@ -17,5 +17,4 @@ namespace Infra.WebSockets
         }
     }
 
-  
 }

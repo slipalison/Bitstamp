@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infra.Migrations
 {
     [DbContext(typeof(BitstampContext))]
-    [Migration("20230520043347_init")]
-    partial class init
+    [Migration("20230520142721_add-unique-index")]
+    partial class adduniqueindex
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,80 @@ namespace Infra.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("Domain.Models.BtcAsk", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("Amount")
+                        .HasPrecision(18, 8)
+                        .HasColumnType("decimal(18,8)");
+
+                    b.Property<DateTimeOffset>("InsertAt")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<long>("Microtimestamp")
+                        .HasColumnType("bigint");
+
+                    b.Property<decimal>("Price")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<long>("Timestamp")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Amount");
+
+                    b.HasIndex("InsertAt");
+
+                    b.HasIndex("Price");
+
+                    b.HasIndex("Amount", "Price")
+                        .IsUnique();
+
+                    b.ToTable("BtcAsks");
+                });
+
+            modelBuilder.Entity("Domain.Models.BtcBid", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("Amount")
+                        .HasPrecision(18, 8)
+                        .HasColumnType("decimal(18,8)");
+
+                    b.Property<DateTimeOffset>("InsertAt")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<long>("Microtimestamp")
+                        .HasColumnType("bigint");
+
+                    b.Property<decimal>("Price")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<long>("Timestamp")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Amount");
+
+                    b.HasIndex("InsertAt");
+
+                    b.HasIndex("Price");
+
+                    b.HasIndex("Amount", "Price")
+                        .IsUnique();
+
+                    b.ToTable("BtcBids");
+                });
 
             modelBuilder.Entity("Domain.Models.EthAsk", b =>
                 {
@@ -56,7 +130,10 @@ namespace Infra.Migrations
 
                     b.HasIndex("Price");
 
-                    b.ToTable("EthAsk", (string)null);
+                    b.HasIndex("Amount", "Price")
+                        .IsUnique();
+
+                    b.ToTable("EthAsks");
                 });
 
             modelBuilder.Entity("Domain.Models.EthBid", b =>
@@ -90,7 +167,10 @@ namespace Infra.Migrations
 
                     b.HasIndex("Price");
 
-                    b.ToTable("EthBid", (string)null);
+                    b.HasIndex("Amount", "Price")
+                        .IsUnique();
+
+                    b.ToTable("EthBids");
                 });
 #pragma warning restore 612, 618
         }

@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace Infra.WebSockets
+namespace Infra.WebSockets.HostedServices
 {
     public class BtcUsdOrderBookHostedService : BackgroundService
     {
@@ -13,9 +13,17 @@ namespace Infra.WebSockets
         }
         protected override Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            return _btcUsdOrderBookService.ConnectAndListen();
+            try
+            {
+                return _btcUsdOrderBookService.ConnectAndListen();
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
+           
         }
     }
 
-  
+
 }
