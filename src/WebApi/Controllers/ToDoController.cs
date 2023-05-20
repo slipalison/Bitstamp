@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers;
 
-[ApiController]
-[Route("[controller]")]
+[ApiController, ApiVersion("1.0")]
+[Route("api/V{version:apiVersion}/[controller]")]
 public class ToDoController : ControllerBase
 {
     private readonly ILogger<ToDoController> _logger;

@@ -1,13 +1,15 @@
-﻿using System.Text.Json;
+﻿using System.Net.WebSockets;
 using System.Text.Json.Serialization;
+using System.Text.Json;
 using Infra;
 using Infra.ConfigsExtensions;
 using Infra.Databases.SqlServers.BitstampData.Extensions;
 using Infra.Middlewares;
+using Infra.WebSockets.HostedServices;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.OpenApi.Models;
 
-namespace WebApi;
+namespace HostedServicesClient;
 
 public class Startup : BaseStartup
 {
@@ -49,20 +51,23 @@ public class Startup : BaseStartup
             options.SubstituteApiVersionInUrl = true;
         }).AddApiVersioning(options => { options.ReportApiVersions = true; });
 
-
         base.ConfigureServices(services);
+
+        services.AddTransient<ClientWebSocket>();
+        services.AddHostedService<BtcUsdOrderBookHostedService>();
+        services.AddHostedService<EthUsdOrderBookHostedService>();
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
 
-        app.UseCors(builder => builder
+        app .UseCors(builder => builder
             .AllowAnyOrigin()
             .AllowAnyMethod()
             .AllowAnyHeader())
             .UseMiddleware<CorrelationMiddleware>()
             .UseMiddleware<LoggingMiddleware>();
-
+        
         // TODO: Isso é só para testes e apresentação, hambiente produtivo isso é contra indicado
         app.ExecuteMigartions();
         app.UseSwagger();

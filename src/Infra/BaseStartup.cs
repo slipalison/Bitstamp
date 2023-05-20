@@ -1,9 +1,7 @@
-﻿using System.Net.WebSockets;
-using Domain.Contracts.Services;
+﻿using Domain.Contracts.Services;
 using Domain.Services;
 using Infra.ConfigsExtensions;
 using Infra.Databases.SqlServers.BitstampData.Extensions;
-using Infra.WebSockets.HostedServices;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -28,10 +26,9 @@ public abstract class BaseStartup
             .HealthChecksConfiguration(_configuration)
             .AddDbContext(_configuration)
             .AddDomainServices();
-
        
-        services.AddTransient<ClientWebSocket>();
-        services.AddHostedService<BtcUsdOrderBookHostedService>();
-        services.AddHostedService<EthUsdOrderBookHostedService>();
+        //services.AddTransient<ClientWebSocket>();
+        //services.AddHostedService<BtcUsdOrderBookHostedService>();
+        //services.AddHostedService<EthUsdOrderBookHostedService>();
     }
 }
