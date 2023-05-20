@@ -21,11 +21,16 @@ namespace Infra.WebSockets
 
         public override async Task ExecuteOrderBook(OrderBook? message, CancellationToken cancellationToken = default)
         {
-            _logger.LogInformation("{@resultJson}", message);
+           // _logger.LogInformation("{@resultJson}", message);
 
             await _btcAskRepository.InsertOrUpdateRangeAsync(new BtcAsk().Convert(message!).ToList(), cancellationToken);
             await _btcBidRepository.InsertOrUpdateRangeAsync(new BtcBid().Convert(message!).ToList(), cancellationToken);
+
+            //var t = await _btcBidRepository.GetMetrics(cancellationToken);
+            //_logger.LogInformation("{@t}", t);
         }
+        
+
     }
 
   
