@@ -2,6 +2,7 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Domain.Contracts.Services;
+using Domain.Contracts.WebSockets;
 using Domain.Services;
 using Infra.ConfigsExtensions;
 using Infra.Databases.SqlServers.BitstampData.Extensions;

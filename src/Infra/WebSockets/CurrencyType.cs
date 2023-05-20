@@ -1,10 +1,7 @@
-﻿namespace Infra.WebSockets
-{
-    public enum CurrencyType
-    {
-        btcusd,
-        ethusd
-    }
+﻿namespace Infra.WebSockets;
 
-  
+public enum CurrencyType
+{
+    btcusd,
+    ethusd
 }

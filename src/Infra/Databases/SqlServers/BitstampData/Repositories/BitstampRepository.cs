@@ -6,8 +6,6 @@ using Responses;
 
 namespace Infra.Databases.SqlServers.BitstampData.Repositories;
 
-
-
 public abstract class BitstampRepository<TEntity> : IBitstampRepository<TEntity> where TEntity : BaseItemBook<TEntity>, new()
 {
     private readonly BitstampContext _context;

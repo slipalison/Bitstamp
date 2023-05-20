@@ -1,4 +1,5 @@
 ﻿using Domain.Commands;
+using Domain.Contracts.WebSockets;
 using Microsoft.Extensions.Logging;
 using System.Net.WebSockets;
 using System.Text;
