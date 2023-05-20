@@ -1,30 +1,24 @@
-﻿using System.Net.WebSockets;
-using System.Text.Json;
+﻿using System.Text.Json;
 using System.Text.Json.Serialization;
-using Domain.Contracts.Services;
-using Domain.Contracts.WebSockets;
-using Domain.Services;
+using Infra;
 using Infra.ConfigsExtensions;
 using Infra.Databases.SqlServers.BitstampData.Extensions;
-using Infra.MassTransitConfiguration;
 using Infra.Middlewares;
-using Infra.WebSockets;
-using Infra.WebSockets.HostedServices;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.OpenApi.Models;
 
 namespace WebApi;
 
-public class Startup
+public class Startup : BaseStartup
 {
     private readonly IConfiguration _configuration;
 
-    public Startup(IConfiguration configuration)
+    public Startup(IConfiguration configuration) : base(configuration)
     {
         _configuration = configuration;
     }
 
-    public void ConfigureServices(IServiceCollection services)
+    public override void ConfigureServices(IServiceCollection services)
     {
         services.AddControllers()
             .AddJsonOptions(options =>
@@ -53,23 +47,11 @@ public class Startup
                 }
             );
 
-        services.AddScoped<ICorrelationContextService, CorrelationContextService>();
-
-        services.AddMassTransitWithRabbitMq(_configuration)
-            .HealthChecksConfiguration(_configuration)
-            .AddDbContext(_configuration)
-            .AddDomainServices();
-
-        services.AddTransient<IBtcUsdOrderBookService, BtcUsdOrderBookService>();
-        services.AddTransient<IEthUsdOrderBookService, EthUsdOrderBookService>();
-        services.AddTransient<ClientWebSocket>();
-        services.AddHostedService<BtcUsdOrderBookHostedService>();
-        services.AddHostedService<EthUsdOrderBookHostedService>();
+        base.ConfigureServices(services);
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
-        
 
         app.UseCors(builder => builder
             .AllowAnyOrigin()

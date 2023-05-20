@@ -51,14 +51,10 @@ public abstract class BitstampRepository<TEntity> : IBitstampRepository<TEntity>
 
     public async Task<Metric> GetMetrics(CancellationToken cancellationToken)
     {
-
-        var entityType = _context.Model.FindEntityType(typeof(TEntity));
-        var tableName = entityType.GetTableName();
+        var tableName = _context.Model.FindEntityType(typeof(TEntity))!.GetTableName();
 
         try
         {
-
-
             var cteQuery =  _context.Metrics
                 .FromSqlRaw(
                 $@"WITH cte AS (SELECT TOP 100 Id,

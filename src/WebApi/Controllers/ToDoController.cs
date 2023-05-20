@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Domain.Commands;
+using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers;
 
@@ -17,6 +18,12 @@ public class ToDoController : ControllerBase
     public async Task<ActionResult> GetAll()
     {
         return Ok();
+    }
+
+    [HttpPost]
+    public async Task<ActionResult> Post(OrderBook orderBook )
+    {
+        return Ok(orderBook);
     }
 
 }

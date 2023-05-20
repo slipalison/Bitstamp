@@ -1,11 +1,14 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Domain.Contracts.WebSockets;
+using Infra.WebSockets;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Infra.ConfigsExtensions;
 
 public static class ServicesConfigExtensions
 {
-    public static void AddDomainServices(this IServiceCollection serviceCollection)
+    public static void AddDomainServices(this IServiceCollection services)
     {
-       // serviceCollection.AddScoped<IBitstampService, BitstampService>();
+        services.AddTransient<IBtcUsdOrderBookService, BtcUsdOrderBookService>();
+        services.AddTransient<IEthUsdOrderBookService, EthUsdOrderBookService>();
     }
 }
