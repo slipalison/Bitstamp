@@ -6,10 +6,12 @@ namespace Infra.WebSockets.HostedServices;
 
 public class BtcUsdOrderBookHostedService : BackgroundService
 {
+    private readonly ILogger<BtcUsdOrderBookHostedService> _logger;
     private readonly IBtcUsdOrderBookService _btcUsdOrderBookService;
 
     public BtcUsdOrderBookHostedService(ILogger<BtcUsdOrderBookHostedService> logger, IBtcUsdOrderBookService btcUsdOrderBookService)
     {
+        _logger = logger;
         _btcUsdOrderBookService = btcUsdOrderBookService;
     }
     protected override Task ExecuteAsync(CancellationToken stoppingToken)
@@ -20,7 +22,8 @@ public class BtcUsdOrderBookHostedService : BackgroundService
         }
         catch (Exception e)
         {
-            throw;
+            _logger.LogError(e, "Erro BtcUsdOrderBookHostedService");
+            return Task.CompletedTask;
         }
        
     }

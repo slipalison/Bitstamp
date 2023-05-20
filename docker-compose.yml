@@ -23,6 +23,27 @@ services:
   #   networks:
   #     - testes-elastic
 
+  # hostedServices:
+  #   #image: ${DOCKER_REGISTRY-}HostedServicesClient
+  #   build:
+  #     context: .
+  #     dockerfile: src/HostedServicesClient/Dockerfile
+  #   ports:
+  #     - "8082:80"
+  #     - "8087:443"
+  #   environment:
+  #     - ASPNETCORE_ENVIRONMENT=Development
+  #     - ConnectionStrings__SqlServer=Server=sqlserver,1433;Database=Bitstamp;User Id=sa;Password=SqlServer2019!;Encrypt=False;
+  #     - Elastic=http://elasticsearch:9200
+  #     - RabbitMq__hosts=["rabbit:5672"]
+  #     - ELASTICSEARCH_NODE_URIS=http://elasticsearch:9200
+  #   depends_on:
+  #    - sqlserver
+  #    - elasticsearch
+  #    - rabbit
+  #   networks:
+  #     - testes-elastic
+
   # front:
   #   build:
   #     context: ./front
