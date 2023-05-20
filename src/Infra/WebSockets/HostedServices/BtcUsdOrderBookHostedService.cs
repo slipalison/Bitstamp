@@ -25,6 +25,5 @@ public class BtcUsdOrderBookHostedService : BackgroundService
             _logger.LogError(e, "Erro BtcUsdOrderBookHostedService");
             return Task.CompletedTask;
         }
-       
     }
 }

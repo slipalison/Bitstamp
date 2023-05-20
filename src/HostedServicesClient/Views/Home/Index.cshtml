@@ -26,7 +26,20 @@
                 <tbody id="produtos">
                 </tbody>
             </table>
+            <div class="container-fluid">
+
+                <div class="input-group mb-3">
+                    <input id="number" type="number" class="form-control" placeholder="Quantidade de Ativos" aria-label="Quantidade de Ativos">
+                    <button class="btn btn-outline-secondary" type="button">Comprar</button>
+                    <button class="btn btn-outline-secondary" type="button">Vender</button>
+                </div>
+
+            </div>
+
         </div>
+
+
+
     </main>
 
 
@@ -35,6 +48,14 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.1/signalr.js"></script>
     <script>
+        const inputNumero = document.getElementById("number");
+        inputNumero.addEventListener("input", function () {
+            if (this.value < 0) {
+                this.value = 0;
+            }
+        });
+
+
         const connection = new signalR.HubConnectionBuilder()
             .withUrl("/websocket")
             .build();
