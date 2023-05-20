@@ -26,15 +26,20 @@
                 <tbody id="produtos">
                 </tbody>
             </table>
+
             <div class="container-fluid">
 
                 <div class="input-group mb-3">
-                    <input id="number" type="number" class="form-control" placeholder="Quantidade de Ativos" aria-label="Quantidade de Ativos">
+                    <input id="number" type="number" class="form-control col-5" placeholder="Quantidade de Ativos" aria-label="Quantidade de Ativos">
+                    <select class="form-select col" id="type">
+                        <option value="BTC" selected>BTC</option>
+                        <option value="ETH">ETH</option>
+                    </select>
                     <button class="btn btn-outline-secondary" type="button">Comprar</button>
                     <button class="btn btn-outline-secondary" type="button">Vender</button>
                 </div>
-
             </div>
+     
 
         </div>
 
@@ -67,37 +72,37 @@
                 connection.on("AtualizarProdutos", (produtos) => {
                     $("#produtos").empty();
                     $("#produtos").append(`<tr>
-                    <td>BTC Bids</td>
-                    <td>USD $ ${produtos.btcBid.minPrice}</td>
-                    <td>USD $ ${produtos.btcBid.maxPrice}</td>
-                    <td>BTC ${produtos.btcBid.mediaAmount}</td>
-                    <td>USD $ ${produtos.btcBid.mediaPrice}</td>
-                    <td>USD $ ${produtos.btcBid.mediaPrice5.toFixed(2)}</td>
-                    </tr>
-                    <tr>
-                    <td>BTC Asks</td>
-                    <td>USD $ ${produtos.btcAsk.minPrice}</td>
-                    <td>USD $ ${produtos.btcAsk.maxPrice}</td>
-                    <td>BTC ${produtos.btcAsk.mediaAmount}</td>
-                    <td>USD $ ${produtos.btcAsk.mediaPrice}</td>
-                    <td>USD $ ${produtos.btcAsk.mediaPrice5.toFixed(2)}</td>
-                    </tr>
-                    <tr>
-                    <td>ETH Bids</td>
-                            <td>USD $ ${produtos.ethBid.minPrice}</td>
-                    <td>USD $ ${produtos.ethBid.maxPrice}</td>
-                    <td>ETH ${produtos.ethBid.mediaAmount}</td>
-                    <td>USD $ ${produtos.ethBid.mediaPrice}</td>
-                    <td>USD $ ${produtos.ethBid.mediaPrice5.toFixed(2)}</td>
-                    </tr>
-                    <tr>
-                    <td>ETH Asks</td>
-                    <td>USD $ ${produtos.ethAsk.minPrice}</td>
-                    <td>USD $ ${produtos.ethAsk.maxPrice}</td>
-                    <td>ETH ${produtos.ethAsk.mediaAmount}</td>
-                    <td>USD $ ${produtos.ethAsk.mediaPrice}</td>
-                    <td>USD $ ${produtos.ethAsk.mediaPrice5.toFixed(2)}</td>
-                    </tr>`);
+                                    <td>BTC Bids</td>
+                                    <td>USD $ ${produtos.btcBid.minPrice.toFixed(2)}</td>
+                                    <td>USD $ ${produtos.btcBid.maxPrice.toFixed(2)}</td>
+                                    <td>BTC ${produtos.btcBid.mediaAmount.toFixed(2)}</td>
+                                    <td>USD $ ${produtos.btcBid.mediaPrice.toFixed(2)}</td>
+                                    <td>USD $ ${produtos.btcBid.mediaPrice5.toFixed(2)}</td>
+                                    </tr>
+                                    <tr>
+                                    <td>BTC Asks</td>
+                                    <td>USD $ ${produtos.btcAsk.minPrice.toFixed(2)}</td>
+                                    <td>USD $ ${produtos.btcAsk.maxPrice.toFixed(2)}</td>
+                                    <td>BTC ${produtos.btcAsk.mediaAmount}</td>
+                                    <td>USD $ ${produtos.btcAsk.mediaPrice.toFixed(2)}</td>
+                                    <td>USD $ ${produtos.btcAsk.mediaPrice5.toFixed(2)}</td>
+                                    </tr>
+                                    <tr>
+                                    <td>ETH Bids</td>
+                                    <td>USD $ ${produtos.ethBid.minPrice.toFixed(2)}</td>
+                                    <td>USD $ ${produtos.ethBid.maxPrice.toFixed(2)}</td>
+                                    <td>ETH ${produtos.ethBid.mediaAmount}</td>
+                                    <td>USD $ ${produtos.ethBid.mediaPrice.toFixed(2)}</td>
+                                    <td>USD $ ${produtos.ethBid.mediaPrice5.toFixed(2)}</td>
+                                    </tr>
+                                    <tr>
+                                    <td>ETH Asks</td>
+                                    <td>USD $ ${produtos.ethAsk.minPrice.toFixed(2)}</td>
+                                    <td>USD $ ${produtos.ethAsk.maxPrice.toFixed(2)}</td>
+                                    <td>ETH ${produtos.ethAsk.mediaAmount}</td>
+                                    <td>USD $ ${produtos.ethAsk.mediaPrice.toFixed(2)}</td>
+                                    <td>USD $ ${produtos.ethAsk.mediaPrice5.toFixed(2)}</td>
+                                    </tr>`);
                 });
             })
             .catch((error) => {
