@@ -4,10 +4,10 @@ namespace Domain.Models
 {
     public class EthAsk : Eth<EthAsk>
     {
-        protected override IReadOnlyList<List<decimal>> GetDataList(OrderBook orderBook) => orderBook.Data.Asks;
+        protected override IReadOnlyList<List<string>> GetDataList(OrderBook orderBook) => orderBook.Data.Asks;
     }
     public class EthBid : Eth<EthBid>
     {
-        protected override IReadOnlyList<List<decimal>> GetDataList(OrderBook orderBook) => orderBook.Data.Bids;
+        protected override IReadOnlyList<List<string>> GetDataList(OrderBook orderBook) => orderBook.Data.Bids;
     }
 }

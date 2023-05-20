@@ -22,7 +22,8 @@ public static class IncludeDbConnection
 
     private static void AddRepositories(this IServiceCollection serviceCollection)
     {
-       // serviceCollection.AddScoped<IBitstampRepository, BitstampRepository>();
+        serviceCollection.AddScoped<IEthAskRepository, EthAskRepository>();
+        serviceCollection.AddScoped<IEthBidRepository, EthBidRepository>();
     }
 
     public static void ExecuteMigartions(this IApplicationBuilder app)

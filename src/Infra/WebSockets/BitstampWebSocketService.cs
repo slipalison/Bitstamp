@@ -30,7 +30,7 @@ public abstract class BitstampWebSocket<T> : IOrderBookService, IDisposable wher
         _buffer = new Memory<byte>(new byte[4096 * 2]);
     }
 
-    public abstract Task ExecuteOrderBook(OrderBook? message);
+    public abstract Task ExecuteOrderBook(OrderBook? message, CancellationToken cancellationToken = default);
 
     public async Task ConnectAndListen()
     {
@@ -59,8 +59,8 @@ public abstract class BitstampWebSocket<T> : IOrderBookService, IDisposable wher
             return;
 
         var message = Encoding.UTF8.GetString(_buffer.Span.Slice(0, result.Count));
-        if (!string.IsNullOrEmpty(message) && TryParse(message, out var resultJson))
-            await ExecuteOrderBook(resultJson);
+        if (!string.IsNullOrEmpty(message) && TryParse(message, out var resultJson) && resultJson!.Event == "data")
+            await ExecuteOrderBook(resultJson, _cancellationToken);
     }
 
     public static bool TryParse(string jsonString, out OrderBook? result)

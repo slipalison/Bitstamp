@@ -11,7 +11,7 @@ namespace Infra.WebSockets
         {
         }
 
-        public override async Task ExecuteOrderBook(OrderBook? message)
+        public override async Task ExecuteOrderBook(OrderBook? message, CancellationToken cancellationToken = default)
         {
             _logger.LogInformation("{@resultJson}", message);
         }
