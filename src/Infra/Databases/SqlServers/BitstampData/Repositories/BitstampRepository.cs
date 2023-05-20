@@ -1,5 +1,6 @@
 ﻿using Domain.Contracts.Repositories;
-using Domain.Models;
+using Domain.Models.AggregationBook;
+using Domain.Models.AggregationMetrics;
 using EFCore.BulkExtensions;
 using Microsoft.EntityFrameworkCore;
 using Responses;

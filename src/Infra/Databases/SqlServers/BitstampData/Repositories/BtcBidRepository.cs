@@ -1,6 +1,5 @@
 ﻿using Domain.Contracts.Repositories;
-using Domain.Models;
-
+using Domain.Models.AggregationBook;
 
 namespace Infra.Databases.SqlServers.BitstampData.Repositories;
 

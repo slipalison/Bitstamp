@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Infra.Databases.SqlServers.BitstampData.Configurations;
-using Domain.Models;
+using Domain.Models.AggregationBook;
+using Domain.Models.AggregationMetrics;
 
 namespace Infra.Databases.SqlServers.BitstampData;
 

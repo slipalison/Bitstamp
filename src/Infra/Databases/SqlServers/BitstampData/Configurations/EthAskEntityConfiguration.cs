@@ -1,4 +1,4 @@
-﻿using Domain.Models;
+﻿using Domain.Models.AggregationBook;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

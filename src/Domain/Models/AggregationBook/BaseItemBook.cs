@@ -1,6 +1,6 @@
 ﻿using Domain.Commands;
 
-namespace Domain.Models
+namespace Domain.Models.AggregationBook
 {
     public abstract class BaseItemBook<T> where T : BaseItemBook<T>, new()
     {

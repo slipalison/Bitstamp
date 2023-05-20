@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace Domain.Models;
+namespace Domain.Models.AggregationMetrics;
 
 public record Metric(
     [property: JsonPropertyName("minPrice")] decimal? MinPrice,

@@ -1,8 +1,8 @@
 ﻿using Domain.Commands;
 
-namespace Domain.Models
+namespace Domain.Models.AggregationBook
 {
-    public class BtcBid : BaseItemBook<BtcBid>
+    public class EthBid : BaseItemBook<EthBid>
     {
         protected override IReadOnlyList<List<string>> GetDataList(OrderBook orderBook) => orderBook.Data.Bids;
     }

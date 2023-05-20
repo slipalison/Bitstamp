@@ -1,7 +1,7 @@
 ﻿using Domain.Commands;
 using Domain.Contracts.Repositories;
 using Domain.Contracts.WebSockets;
-using Domain.Models;
+using Domain.Models.AggregationBook;
 using Microsoft.Extensions.Logging;
 using System.Net.WebSockets;
 
@@ -24,7 +24,5 @@ public class EthUsdOrderBookService : BitstampWebSocket<EthUsdOrderBookService>,
     {
         await _ethAskRepository.InsertOrUpdateRangeAsync(new EthAsk().Convert(message!).ToList(), cancellationToken);
         await _ethBidRepository.InsertOrUpdateRangeAsync(new EthBid().Convert(message!).ToList(), cancellationToken);
-        //var t = await _btcBidRepository.GetMetrics(cancellationToken);
-        //_logger.LogInformation("{@t}", t);
     }
 }

@@ -1,4 +1,4 @@
-﻿using Domain.Models;
+﻿using Domain.Models.AggregationMetrics;
 using Responses;
 
 namespace Domain.Contracts.Repositories;

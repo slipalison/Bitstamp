@@ -1,6 +1,6 @@
 ﻿using Domain.Commands;
 
-namespace Domain.Models
+namespace Domain.Models.AggregationBook
 {
     public class EthAsk : BaseItemBook<EthAsk>
     {
