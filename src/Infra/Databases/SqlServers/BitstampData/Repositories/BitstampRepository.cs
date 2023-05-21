@@ -72,7 +72,7 @@ public abstract class BitstampRepository<TEntity> : IBitstampRepository where TE
 
     public async Task<List<OrderItem>> ListItensBookToOrder(decimal amout, CancellationToken cancellationToken)
     {
-        var exists = await _dbSet.Where(x => x.Amount == amout).Select(x => new OrderItem(x.Amount, x.Price, x.InsertAt))
+        var exists = await _dbSet.Where(x => x.Amount == amout).Take(1).Select(x => new OrderItem(x.Amount, x.Price, x.InsertAt))
                 .ToListAsync(cancellationToken);
 
         if (exists.Any())

@@ -5,7 +5,7 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
-COPY ["src/HostedServicesClient/HostedServicesClient.csproj", "src/WebApi/"]
+COPY ["src/HostedServicesClient/HostedServicesClient.csproj", "src/HostedServicesClient/"]
 RUN dotnet restore "src/HostedServicesClient/HostedServicesClient.csproj"
 COPY . .
 WORKDIR "/src/src/HostedServicesClient"
