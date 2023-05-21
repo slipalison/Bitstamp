@@ -1,14 +1,11 @@
 {
   "stryker-config": {
-    "mutation": {
-      "maxConcurrentTestRunners": 4,
-      "input": [
-        "src/**/*.cs"
-      ],
-      "testProjects": [
-        "test/UnitTest/UnitTest.csproj"
-      ]
-    },
+    "mutate": [
+      "src/**/*.cs"
+    ],
+    "testProjects": [
+      "test/UnitTest/UnitTest.csproj"
+    ],
     "thresholds": {
       "high": 80,
       "low": 60,
@@ -17,7 +14,6 @@
     "reporters": [
       "progress",
       "html"
-    ],
-    "timeoutMS": 5000
+    ]
   }
 }
