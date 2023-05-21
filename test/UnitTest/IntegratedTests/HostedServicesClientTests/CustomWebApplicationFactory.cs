@@ -2,6 +2,7 @@
 using Domain.Models.AggregationMetrics;
 using Domain.Models.AggregationOrder;
 using Infra.Databases.SqlServers.BitstampData;
+using Infra.Databases.SqlServers.BitstampData.Repositories;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Data.Sqlite;
@@ -18,17 +19,22 @@ public class CustomWebApplicationFactory<TProgram>
     {
         builder.ConfigureServices(services =>
         {
-            //var IBtcAskRepository = Substitute.For<IBtcAskRepository>();
-            //var IBtcBidRepository = Substitute.For<IBtcBidRepository>();
-            //var IEthAskRepository = Substitute.For<IEthAskRepository>();
-            //var IEthBidRepository = Substitute.For<IEthBidRepository>();
 
-            //ConfigRepo(IBtcAskRepository, IBtcBidRepository, IEthAskRepository, IEthBidRepository);
+            //  BitstampContext
+            var serviceProvider = services.BuildServiceProvider();
+            var myService = serviceProvider.GetService<BitstampContext>();
 
-            //services.AddScoped(x => IBtcAskRepository);
-            //services.AddScoped(x => IBtcBidRepository);
-            //services.AddScoped(x => IEthAskRepository);
-            //services.AddScoped(x => IEthBidRepository);
+            var IBtcAskRepository = Substitute.ForPartsOf<BtcAskRepository>(myService);
+            var IBtcBidRepository = Substitute.ForPartsOf<BtcBidRepository>(myService);
+            var IEthAskRepository = Substitute.ForPartsOf<EthAskRepository>(myService);
+            var IEthBidRepository = Substitute.ForPartsOf<EthBidRepository>(myService);
+
+            ConfigRepo(IBtcAskRepository, IBtcBidRepository, IEthAskRepository, IEthBidRepository);
+
+            services.AddScoped<IBtcAskRepository>(x => IBtcAskRepository);
+            services.AddScoped<IBtcBidRepository>(x => IBtcBidRepository);
+            services.AddScoped<IEthAskRepository>(x => IEthAskRepository);
+            services.AddScoped<IEthBidRepository>(x => IEthBidRepository);
             MockInMemoryDatabase(services);
         });
 
@@ -38,16 +44,13 @@ public class CustomWebApplicationFactory<TProgram>
     private static void MockInMemoryDatabase(IServiceCollection services)
     {
         var dbContextDescriptor = services.SingleOrDefault(
-            d => d.ServiceType ==
-                 typeof(DbContextOptions<BitstampContext>));
+            d => d.ServiceType == typeof(DbContextOptions<BitstampContext>));
 
         if (dbContextDescriptor != null) services.Remove(dbContextDescriptor);
 
         var dbConnectionDescriptor = services.SingleOrDefault(
-            d => d.ServiceType ==
-                 typeof(DbConnection));
+            d => d.ServiceType == typeof(DbConnection));
 
-        // if (dbConnectionDescriptor != null) services.Remove(dbConnectionDescriptor);
 
         services.AddSingleton<DbConnection>(container =>
         {
@@ -62,4 +65,13 @@ public class CustomWebApplicationFactory<TProgram>
             options.UseSqlite(connection);
         });
     }
-}
+
+    private static void ConfigRepo(params IBitstampRepository[] bitstampRepository)
+    {
+
+        foreach (var bitstamp in bitstampRepository)
+        {
+           // bitstamp.GetMetrics(Arg.Any<CancellationToken>()).Returns<Task<Metric>>(Task.FromResult(new Metric(10, 11, 5, 6, 12)));
+        }
+    }
+} 
