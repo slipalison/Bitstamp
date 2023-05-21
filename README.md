@@ -13,8 +13,6 @@ Para subir a aplicação basta executar o comando a baixo na pasta raiz do proje
 
 O docker-compose, irá subir um sql server, e uma Web API. A aplicação irá criar o banco e popular a tabela.
 
-## A API
-
 
 ## Cobertura Sunburst
 ![Grid](https://codecov.io/gh/slipalison/Bitstamp/branch/main/graphs/sunburst.svg?token=yxTtfDM1em)
