@@ -7,6 +7,12 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <Compile Remove="MassTransitConfiguration\**" />
+      <EmbeddedResource Remove="MassTransitConfiguration\**" />
+      <None Remove="MassTransitConfiguration\**" />
+    </ItemGroup>
+
+    <ItemGroup>
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
         <PackageReference Include="AspNetCore.HealthChecks.UI.Client" Version="6.0.5" />
         <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" Version="5.0.0" />
@@ -14,7 +20,6 @@
         <PackageReference Include="AspNetCore.HealthChecks.Rabbitmq" Version="6.0.2" />
         <PackageReference Include="AspNetCore.HealthChecks.Redis" Version="6.0.4" />
         <PackageReference Include="AspNetCore.HealthChecks.SqlServer" Version="6.0.2" />
-        <PackageReference Include="AspNetCore.HealthChecks.UI.Client" Version="6.0.5" />
         <PackageReference Include="EFCore.BulkExtensions" Version="7.1.1" />
         <PackageReference Include="MassTransit.AspNetCore" Version="7.3.1" />
         <PackageReference Include="MassTransit.Extensions.DependencyInjection" Version="7.3.1" />
@@ -53,13 +58,6 @@
         <Reference Include="Microsoft.IO.RecyclableMemoryStream">
             <HintPath>C:\Users\aliso\.nuget\packages\microsoft.io.recyclablememorystream\2.3.1\lib\net5.0\Microsoft.IO.RecyclableMemoryStream.dll</HintPath>
         </Reference>
-    </ItemGroup>
-
-    <ItemGroup>
-      <Compile Remove="MassTransitConfiguration\Consumers\ApplicatrionJsonDeserialize.cs" />
-      <Compile Remove="MassTransitConfiguration\Consumers\ApplicatrionJsonTypeDeserialize.cs" />
-      <Compile Remove="MassTransitConfiguration\Consumers\ToDoConsumer.cs" />
-      <Compile Remove="MassTransitConfiguration\Consumers\ToDoConsumerDefinition.cs" />
     </ItemGroup>
 
 </Project>

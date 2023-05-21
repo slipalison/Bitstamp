@@ -1,7 +1,8 @@
 ﻿namespace Domain.Contracts.Repositories;
 
-public interface IEntity {
-     Guid Id { get; set; } 
+public interface IEntity
+{
+    Guid Id { get; set; }
     DateTimeOffset InsertAt { get; set; }
     long Timestamp { get; set; }
     long Microtimestamp { get; set; }

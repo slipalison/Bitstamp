@@ -1,8 +1,8 @@
-using System.Diagnostics.CodeAnalysis;
-using System.Globalization;
 using Serilog;
 using Serilog.Formatting.Json;
 using Serilog.Sinks.Elasticsearch;
+using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 
 namespace WebApi;
 

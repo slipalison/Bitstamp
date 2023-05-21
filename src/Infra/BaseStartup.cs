@@ -18,17 +18,11 @@ public abstract class BaseStartup
 
     public virtual void ConfigureServices(IServiceCollection services)
     {
-
         services.AddScoped<ICorrelationContextService, CorrelationContextService>();
 
         services
-            //.AddMassTransitWithRabbitMq(_configuration)
             .HealthChecksConfiguration(_configuration)
             .AddDbContext(_configuration)
             .AddDomainServices();
-       
-        //services.AddTransient<ClientWebSocket>();
-        //services.AddHostedService<BtcUsdOrderBookHostedService>();
-        //services.AddHostedService<EthUsdOrderBookHostedService>();
     }
 }

@@ -9,4 +9,3 @@ public class EthBidRepository : BitstampRepository<EthBid>, IEthBidRepository
     {
     }
 }
-

@@ -14,6 +14,7 @@ public class EthUsdOrderBookHostedService : BackgroundService
         _logger = logger;
         _ethUsdOrderBookService = ethUsdOrderBookService;
     }
+
     protected override Task ExecuteAsync(CancellationToken stoppingToken)
     {
         try

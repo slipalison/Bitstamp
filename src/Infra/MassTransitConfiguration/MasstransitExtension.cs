@@ -1,10 +1,10 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.Text.Json;
-using Domain.Contracts.Services;
+﻿using Domain.Contracts.Services;
 using Infra.MassTransitConfiguration.Publishers;
 using MassTransit;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System.Diagnostics.CodeAnalysis;
+using System.Text.Json;
 
 namespace Infra.MassTransitConfiguration;
 
@@ -21,24 +21,23 @@ public static class MasstransitExtension
             options.StopTimeout = TimeSpan.FromMinutes(1);
         });
 
-
         return services.AddBitstampHost(configuration)
             .AddScoped(typeof(IBitstampPublisher<>), typeof(BitstampPublisher<>));
     }
 
     private static IServiceCollection AddBitstampHost(this IServiceCollection services, IConfiguration configuration)
     {
-      //  services.AddScoped<IConsumer<ToDoItemQueueCreateCommand>, ToDoConsumer>();
+        //  services.AddScoped<IConsumer<ToDoItemQueueCreateCommand>, ToDoConsumer>();
 
         if (configuration["environment"] == "Test")
             return services;
 
         return services.AddMassTransit<IBitstampBus>(cfg =>
         {
-          //  cfg.AddConsumer<ToDoConsumer, ToDoConsumerDefinition>();
+            //  cfg.AddConsumer<ToDoConsumer, ToDoConsumerDefinition>();
             cfg.UsingRabbitMq((context, configurator) =>
             {
-              //  configurator.AddFanOutPublisher<ToDoItemQueueCreateCommand>("Create.Exchange");
+                //  configurator.AddFanOutPublisher<ToDoItemQueueCreateCommand>("Create.Exchange");
                 configurator.CopnfigurationRabbit(configuration);
                 configurator.ConfigureEndpoints(context);
             });
@@ -55,7 +54,6 @@ public static class MasstransitExtension
             JsonSerializer.Deserialize<List<string>>(configuration.GetSection("RabbitMq:hosts").Value!);
 
         var maimHost = hosts!.First().Split(":");
-
 
         cfg.Host(maimHost[0], ushort.Parse(maimHost[1]), "/", (hostCongig) =>
         {

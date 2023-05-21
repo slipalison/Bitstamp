@@ -1,8 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 
-
-
 namespace Infra.Databases.SqlServers.BitstampData;
 
 public class BitstampDesignContext : IDesignTimeDbContextFactory<BitstampContext>

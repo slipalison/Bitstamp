@@ -10,5 +10,4 @@ public record Metric(
     [property: JsonPropertyName("mediaPrice5")] decimal? MediaPrice5
 );
 
-public record OrderItem (decimal Amount, decimal Price, DateTimeOffset InsertAt);
-
+public record OrderItem(decimal Amount, decimal Price, DateTimeOffset InsertAt);

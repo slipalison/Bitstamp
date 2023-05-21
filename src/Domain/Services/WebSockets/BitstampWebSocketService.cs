@@ -6,6 +6,7 @@ using System.Text;
 using System.Text.Json;
 
 namespace Domain.Contracts.Services.WebSockets;
+
 public abstract class BitstampWebSocket<T> : IOrderBookService, IDisposable where T : BitstampWebSocket<T>
 {
     private readonly string _wsUrl;
@@ -69,7 +70,8 @@ public abstract class BitstampWebSocket<T> : IOrderBookService, IDisposable wher
         try
         {
             var obj = JsonSerializer.Deserialize<OrderBook>(jsonString, _jsonSerializerOptions);
-            if (obj is null) {
+            if (obj is null)
+            {
                 result = default;
                 return false;
             }
@@ -101,6 +103,3 @@ public abstract class BitstampWebSocket<T> : IOrderBookService, IDisposable wher
         GC.SuppressFinalize(this);
     }
 }
-
-
-

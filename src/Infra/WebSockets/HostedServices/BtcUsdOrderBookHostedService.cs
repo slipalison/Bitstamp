@@ -14,6 +14,7 @@ public class BtcUsdOrderBookHostedService : BackgroundService
         _logger = logger;
         _btcUsdOrderBookService = btcUsdOrderBookService;
     }
+
     protected override Task ExecuteAsync(CancellationToken stoppingToken)
     {
         try

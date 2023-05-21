@@ -23,9 +23,7 @@ public class RepositoryFabric : IRepositoryFabric
         _ethBidRepository = ethBidRepository;
     }
 
-
-
-    public IBitstampRepository GetRepositoryToOrder(TypeOrder typeOrder, TypeCripto typeCripto) 
+    public IBitstampRepository GetRepositoryToOrder(TypeOrder typeOrder, TypeCripto typeCripto)
     {
         return typeOrder switch
         {
@@ -33,5 +31,4 @@ public class RepositoryFabric : IRepositoryFabric
             _ => typeCripto == TypeCripto.BTC ? _btcBidRepository : _ethBidRepository,
         };
     }
-
 }

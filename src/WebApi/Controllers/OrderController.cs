@@ -1,7 +1,6 @@
 ﻿using Domain.Commands;
 using Domain.Contracts.Services;
 using Domain.Models.AggregationOrder;
-using Domain.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers;
@@ -11,37 +10,31 @@ namespace WebApi.Controllers;
 public class OrderController : ControllerBase
 {
     private readonly IRequestOrderService _requestOrderService;
-    private readonly ICorrelationContextService _correlation;
-    private readonly ILogger<OrderController> _logger;
 
-    public OrderController(ILogger<OrderController> logger, ICorrelationContextService correlationContextService,
-        IRequestOrderService requestOrderService)
+    public OrderController(IRequestOrderService requestOrderService)
     {
         _requestOrderService = requestOrderService;
-        _correlation = correlationContextService;
-        _logger = logger;
-    }
-
-    [HttpGet]
-    public async Task<ActionResult> GetAll()
-    {
-        return Ok();
     }
 
     [HttpPost("buy")]
-    public async Task<ActionResult> PostBuy([FromBody] CreateOrder createOrder, CancellationToken cancellationToken)
+    public async Task<ActionResult<Order>> PostBuy([FromBody] CreateOrder createOrder, CancellationToken cancellationToken)
     {
         var result = await _requestOrderService.CreateAsync(createOrder, TypeOrder.Buy, cancellationToken);
 
-        return Ok(result);
+        if (result.IsSuccess)
+            return Ok(result.Value);
+
+        return NotFound(result.Error);
     }
 
-
     [HttpPost("sell")]
-    public async Task<ActionResult> PostSell([FromBody] CreateOrder createOrder, CancellationToken cancellationToken)
+    public async Task<ActionResult<Order>> PostSell([FromBody] CreateOrder createOrder, CancellationToken cancellationToken)
     {
         var result = await _requestOrderService.CreateAsync(createOrder, TypeOrder.Sell, cancellationToken);
 
-        return Ok(result);
+        if (result.IsSuccess)
+            return Ok(result.Value);
+
+        return NotFound(result.Error);
     }
 }

@@ -1,11 +1,10 @@
 ﻿using Domain.Services;
 using Flurl.Http;
-using Infra.MassTransitConfiguration;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.DependencyInjection;
 using WebApi;
 
-namespace UnitTest.IntegratedTests;
+namespace UnitTest.IntegratedTests.WebApi;
 
 public abstract class AbstractIntegratedTest : IClassFixture<CustomWebApplicationFactory<Program>>
 {
@@ -21,14 +20,10 @@ public abstract class AbstractIntegratedTest : IClassFixture<CustomWebApplicatio
         });
 
         CorrelationService = Factory.Services.GetRequiredService<ICorrelationContextService>();
-        BusCustom = factory.Services.GetRequiredService<IBitstampBus>();
         Client = new FlurlClient(client);
     }
 
-    protected IBitstampBus BusCustom { get; set; }
-
     protected ICorrelationContextService CorrelationService { get; set; }
-
 
     protected IFlurlRequest CallHttp(string uri)
     {

@@ -1,8 +1,9 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using MassTransit;
+﻿using MassTransit;
 using MassTransit.Serialization;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Infra.MassTransitConfiguration.Consumers;
+
 [ExcludeFromCodeCoverage]
 public abstract class BaseConsumerDefinition<TConsumer> : ConsumerDefinition<TConsumer>
     where TConsumer : class, IConsumer
@@ -18,8 +19,6 @@ public abstract class BaseConsumerDefinition<TConsumer> : ConsumerDefinition<TCo
         _routingKey = routingKey;
         EndpointName = endipoint;
         _exchangeType = exchangeType;
-    
-        
 
         Endpoint(x =>
         {

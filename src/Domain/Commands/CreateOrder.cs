@@ -1,5 +1,4 @@
-﻿
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Domain.Commands;
 
@@ -10,6 +9,7 @@ public record CreateOrder
     public TypeCripto TypeCripto { get; set; }
 }
 
-public enum TypeCripto { 
+public enum TypeCripto
+{
     BTC, ETH
 }

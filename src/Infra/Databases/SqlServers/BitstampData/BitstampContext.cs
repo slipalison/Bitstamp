@@ -1,9 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Infra.Databases.SqlServers.BitstampData.Configurations;
-using Domain.Models.AggregationBook;
+﻿using Domain.Models.AggregationBook;
 using Domain.Models.AggregationMetrics;
 using Domain.Models.AggregationOrder;
-using Domain.Contracts.Repositories;
+using Infra.Databases.SqlServers.BitstampData.Configurations;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infra.Databases.SqlServers.BitstampData;
 
@@ -26,12 +25,9 @@ public class BitstampContext : DbContext
     {
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(EthBidEntityConfiguration).Assembly);
 
-
         modelBuilder.Ignore<Metric>();
         modelBuilder.Ignore<OrderItem>();
         modelBuilder.Entity<Metric>().HasNoKey();
         modelBuilder.Entity<OrderItem>().HasNoKey();
-
-       
     }
 }

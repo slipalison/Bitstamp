@@ -2,6 +2,7 @@
 using Domain.Contracts.Repositories;
 using Domain.Contracts.Services;
 using Domain.Models.AggregationOrder;
+using Responses;
 
 namespace Domain.Services;
 
@@ -15,20 +16,19 @@ public class RequestOrderService : IRequestOrderService
         _repositoryFabric = repositoryFabric;
         _correlation = correlation;
     }
-    public async Task<Order> CreateAsync(CreateOrder createOrder, TypeOrder typeOrder, CancellationToken cancellationToken)
+
+    public async Task<Result<Order>> CreateAsync(CreateOrder createOrder, TypeOrder typeOrder, CancellationToken cancellationToken)
     {
         var repo = _repositoryFabric.GetRepositoryToOrder(typeOrder, createOrder.TypeCripto);
         var list = await repo.ListItensBookToOrder(createOrder.Amount, cancellationToken);
 
-        var t = new Order(
-        _correlation.GetCorrelationId(),
-        createOrder.Amount,
-        createOrder.TypeCripto,
-        list.ToArray(),
-        typeOrder    );
+        if (list is null)
+            return Result.Fail<Order>("Null", "Não encontrado valor na base");
 
-        await repo.SaveOrder(t, cancellationToken);
+        var order = new Order(_correlation.GetCorrelationId(), createOrder.Amount, createOrder.TypeCripto, list.ToArray(), typeOrder);
 
-        return t;
+        await repo.SaveOrder(order, cancellationToken);
+
+        return Result.Ok(order);
     }
 }

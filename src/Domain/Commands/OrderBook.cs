@@ -7,6 +7,4 @@ namespace Domain.Commands
         [property: JsonPropertyName("channel")] string Channel,
         [property: JsonPropertyName("event")] string Event
     );
-
-  
 }

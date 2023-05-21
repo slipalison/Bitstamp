@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infra.Databases.SqlServers.BitstampData.Configurations;
 
-public class EthAskEntityConfiguration : IEntityTypeConfiguration<EthAsk>
+public class BtcBidEntityConfiguration : IEntityTypeConfiguration<BtcBid>
 {
-    public void Configure(EntityTypeBuilder<EthAsk> builder)
+    public void Configure(EntityTypeBuilder<BtcBid> builder)
     {
         builder.HasKey(p => p.Id);
         builder.Property(p => p.Id).ValueGeneratedOnAdd();

@@ -1,21 +1,19 @@
-﻿using System.Text.Json;
-using System.Text.Json.Serialization;
-using Infra;
+﻿using Infra;
 using Infra.ConfigsExtensions;
 using Infra.Databases.SqlServers.BitstampData.Extensions;
 using Infra.Middlewares;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.OpenApi.Models;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace WebApi;
 
 public class Startup : BaseStartup
 {
-    private readonly IConfiguration _configuration;
 
     public Startup(IConfiguration configuration) : base(configuration)
     {
-        _configuration = configuration;
     }
 
     public override void ConfigureServices(IServiceCollection services)
@@ -35,7 +33,6 @@ public class Startup : BaseStartup
         {
             options.Providers.Add<GzipCompressionProvider>();
             options.EnableForHttps = true;
-
         })
         .AddEndpointsApiExplorer()
         .AddSwaggerGen(c =>
@@ -49,13 +46,11 @@ public class Startup : BaseStartup
             options.SubstituteApiVersionInUrl = true;
         }).AddApiVersioning(options => { options.ReportApiVersions = true; });
 
-
         base.ConfigureServices(services);
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
-
         app.UseCors(builder => builder
             .AllowAnyOrigin()
             .AllowAnyMethod()
@@ -67,7 +62,7 @@ public class Startup : BaseStartup
         app.ExecuteMigartions();
         app.UseSwagger();
         app.UseSwaggerUI();
-        app//.UseHttpsRedirection()
+        app
             .UseRouting()
             .UseResponseCompression()
             .UseEndpoints(endpoints =>

@@ -1,7 +1,7 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using Domain.Contracts.Services;
+﻿using Domain.Contracts.Services;
 using MassTransit;
 using MassTransit.Transports.Fabric;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Infra.MassTransitConfiguration.Publishers;
 
@@ -20,13 +20,13 @@ public static class AddPublisherExtensions
         configurator.AddMassTransitPublisher<T>(exchangeName, ExchangeType.Direct);
         return configurator;
     }
-    
+
     public static IRabbitMqBusFactoryConfigurator AddFanOutPublisher<T>(this IRabbitMqBusFactoryConfigurator configurator, string exchangeName) where T : class, IEventBase
     {
         configurator.AddMassTransitPublisher<T>(exchangeName, ExchangeType.FanOut);
         return configurator;
     }
-    
+
     public static IRabbitMqBusFactoryConfigurator AddTopicPublisher<T>(this IRabbitMqBusFactoryConfigurator configurator, string exchangeName) where T : class, IEventBase
     {
         configurator.AddMassTransitPublisher<T>(exchangeName, ExchangeType.Topic);
@@ -36,9 +36,9 @@ public static class AddPublisherExtensions
     public static IRabbitMqBusFactoryConfigurator AddMassTransitPublisher<T>(this IRabbitMqBusFactoryConfigurator configurator,
         string exchangeName, ExchangeType exchangeType) where T : class, IEventBase
     {
-        configurator.Message<T>(x=> x.SetEntityName(exchangeName));
-        configurator.Send<T>(x=> x.UseCorrelationId(p=> p.CorrelationId));
-        configurator.Publish<T>(x=> x.ExchangeType = ExchangeTypes[exchangeType]);
+        configurator.Message<T>(x => x.SetEntityName(exchangeName));
+        configurator.Send<T>(x => x.UseCorrelationId(p => p.CorrelationId));
+        configurator.Publish<T>(x => x.ExchangeType = ExchangeTypes[exchangeType]);
 
         return configurator;
     }

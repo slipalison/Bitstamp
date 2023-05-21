@@ -1,12 +1,12 @@
-using System.Diagnostics.CodeAnalysis;
 using Serilog;
 using Serilog.Formatting.Json;
 using Serilog.Sinks.Elasticsearch;
-
+using System.Diagnostics.CodeAnalysis;
 
 namespace HostedServicesClient;
 
 [ExcludeFromCodeCoverage]
+[SuppressMessage("Major Code Smell", "S1118:Utility classes should not have public constructors", Justification = "Classe Main")]
 public class Program
 {
     public static async Task Main(string[] args)

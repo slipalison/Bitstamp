@@ -25,8 +25,4 @@ public class BtcUsdOrderBookService : BitstampWebSocket<BtcUsdOrderBookService>,
         await _btcAskRepository.InsertOrUpdateRangeAsync(new BtcAsk().Convert(message!).ToList(), cancellationToken);
         await _btcBidRepository.InsertOrUpdateRangeAsync(new BtcBid().Convert(message!).ToList(), cancellationToken);
     }
-    
-
 }
-
-

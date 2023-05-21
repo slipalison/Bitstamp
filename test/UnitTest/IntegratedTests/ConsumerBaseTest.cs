@@ -1,6 +1,7 @@
 ﻿using Domain.Contracts.Services;
 using MassTransit;
 using NSubstitute;
+using UnitTest.IntegratedTests.WebApi;
 using WebApi;
 
 namespace UnitTest.IntegratedTests;

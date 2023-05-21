@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace Infra.Databases.SqlServers.BitstampData.Extensions;
 
@@ -22,10 +23,10 @@ public static class IncludeDbConnection
 
     private static void AddRepositories(this IServiceCollection serviceCollection)
     {
-        serviceCollection.AddScoped<IEthAskRepository, EthAskRepository>();
-        serviceCollection.AddScoped<IEthBidRepository, EthBidRepository>();
-        serviceCollection.AddScoped<IBtcAskRepository, BtcAskRepository>();
-        serviceCollection.AddScoped<IBtcBidRepository, BtcBidRepository>();
+        serviceCollection.TryAddScoped<IEthAskRepository, EthAskRepository>();
+        serviceCollection.TryAddScoped<IEthBidRepository, EthBidRepository>();
+        serviceCollection.TryAddScoped<IBtcAskRepository, BtcAskRepository>();
+        serviceCollection.TryAddScoped<IBtcBidRepository, BtcBidRepository>();
     }
 
     public static void ExecuteMigartions(this IApplicationBuilder app)

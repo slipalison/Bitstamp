@@ -24,6 +24,7 @@ services:
       - testes-elastic
 
   hostedservices:
+    restart: always
     #image: ${DOCKER_REGISTRY-}HostedServicesClient
     build:
       context: .

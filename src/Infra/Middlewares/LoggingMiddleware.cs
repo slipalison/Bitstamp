@@ -19,7 +19,6 @@ public class LoggingMiddleware
         _recyclableMemoryStreamManager = new RecyclableMemoryStreamManager();
     }
 
-
     public async Task Invoke(HttpContext context)
     {
         if (context.Request.Path.Value!.Contains("swagger"))
