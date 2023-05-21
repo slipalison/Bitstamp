@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System.Data.Common;
 
-namespace UnitTest.IntegratedTests;
+namespace UnitTest.IntegratedTests.WebApi;
 
 public class CustomWebApplicationFactory<TProgram>
     : WebApplicationFactory<TProgram> where TProgram : class
@@ -47,7 +47,7 @@ public class CustomWebApplicationFactory<TProgram>
             d => d.ServiceType ==
                  typeof(DbConnection));
 
-        if (dbConnectionDescriptor != null) services.Remove(dbConnectionDescriptor);
+        // if (dbConnectionDescriptor != null) services.Remove(dbConnectionDescriptor);
 
         services.AddSingleton<DbConnection>(container =>
         {
@@ -55,11 +55,6 @@ public class CustomWebApplicationFactory<TProgram>
             connection.Open();
             return connection;
         });
-
-        //services.AddDbContext<BitstampContext>((container, options) =>
-        //{
-        //    options.UseInMemoryDatabase("Bitstamp", x => { x.EnableNullChecks(true); });
-        //}, ServiceLifetime.Transient);
 
         services.AddDbContextPool<BitstampContext>((container, options) =>
         {

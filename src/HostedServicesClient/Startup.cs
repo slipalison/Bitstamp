@@ -30,7 +30,7 @@ public class Startup : BaseStartup
         services.AddTransient<ClientWebSocket>();
         services.AddHostedService<BtcUsdOrderBookHostedService>();
         services.AddHostedService<EthUsdOrderBookHostedService>();
-        services.AddHostedService<WebSocketWorker>();
+        //services.AddHostedService<WebSocketWorker>();
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
