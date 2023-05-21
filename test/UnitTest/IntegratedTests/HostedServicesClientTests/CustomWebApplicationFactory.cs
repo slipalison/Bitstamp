@@ -48,10 +48,6 @@ public class CustomWebApplicationFactory<TProgram>
 
         if (dbContextDescriptor != null) services.Remove(dbContextDescriptor);
 
-        var dbConnectionDescriptor = services.SingleOrDefault(
-            d => d.ServiceType == typeof(DbConnection));
-
-
         services.AddSingleton<DbConnection>(container =>
         {
             var connection = new SqliteConnection("Data Source=:memory:");

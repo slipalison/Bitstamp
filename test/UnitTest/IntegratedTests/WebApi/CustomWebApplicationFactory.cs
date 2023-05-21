@@ -43,10 +43,8 @@ public class CustomWebApplicationFactory<TProgram>
 
         if (dbContextDescriptor != null) services.Remove(dbContextDescriptor);
 
-        var dbConnectionDescriptor = services.SingleOrDefault(
-            d => d.ServiceType ==
-                 typeof(DbConnection));
-
+        //var dbConnectionDescriptor = services.SingleOrDefault(
+        //    d => d.ServiceType ==typeof(DbConnection));
         // if (dbConnectionDescriptor != null) services.Remove(dbConnectionDescriptor);
 
         services.AddSingleton<DbConnection>(container =>

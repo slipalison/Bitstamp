@@ -1,0 +1,19 @@
+{
+    "mutate": [
+      "src/**/*.cs"
+    ],
+    "testRunner": "dotnet",
+    "testProjects": [
+        "test/UnitTest/UnitTest.csproj"
+      ],
+    "maxConcurrentTestRunners": 4,
+    "thresholds": {
+      "high": 80,
+      "low": 60,
+      "break": 0
+    },
+    "reporters": [
+      "progress",
+      "html"
+    ]
+  }

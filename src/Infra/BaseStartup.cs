@@ -11,7 +11,7 @@ public abstract class BaseStartup
 {
     private readonly IConfiguration _configuration;
 
-    public BaseStartup(IConfiguration configuration)
+    protected BaseStartup(IConfiguration configuration)
     {
         _configuration = configuration;
     }

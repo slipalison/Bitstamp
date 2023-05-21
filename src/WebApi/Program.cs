@@ -7,6 +7,7 @@ using System.Globalization;
 namespace WebApi;
 
 [ExcludeFromCodeCoverage]
+[SuppressMessage("Major Code Smell", "S1118:Utility classes should not have public constructors", Justification = "Classe principal")]
 public class Program
 {
     public static async Task Main(string[] args)
