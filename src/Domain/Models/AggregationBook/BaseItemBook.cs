@@ -1,8 +1,9 @@
 ﻿using Domain.Commands;
+using Domain.Contracts.Repositories;
 
 namespace Domain.Models.AggregationBook
 {
-    public abstract class BaseItemBook<T> where T : BaseItemBook<T>, new()
+    public abstract class BaseItemBook<T> : IEntity where T : BaseItemBook<T>, new()
     {
         public Guid Id { get; set; } = Guid.NewGuid();
         public DateTimeOffset InsertAt { get; set; }
@@ -13,7 +14,7 @@ namespace Domain.Models.AggregationBook
 
         protected abstract IReadOnlyList<List<string>> GetDataList(OrderBook orderBook);
 
-        public IReadOnlyList<T> Convert(OrderBook orderBook)
+        public IReadOnlyList<IEntity> Convert(OrderBook orderBook)
         {
             return GetDataList(orderBook).Select(x => new T
             {
@@ -25,7 +26,7 @@ namespace Domain.Models.AggregationBook
             }).ToList();
         }
 
-        public T UpdateTimeStamp(long timestamp, long microtimestamp)
+        public IEntity UpdateTimeStamp(long timestamp, long microtimestamp)
         {
             Timestamp = timestamp;
             Microtimestamp = microtimestamp;

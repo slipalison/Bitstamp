@@ -1,4 +1,4 @@
-﻿namespace Infra.WebSockets;
+﻿namespace Domain.Contracts.Services.WebSockets;
 
 public enum CurrencyType
 {

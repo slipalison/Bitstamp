@@ -1,4 +1,5 @@
 ﻿using Domain.Commands;
+using Domain.Contracts.Repositories;
 
 namespace Domain.Models.AggregationBook
 {

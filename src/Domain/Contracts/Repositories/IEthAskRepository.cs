@@ -2,17 +2,17 @@
 
 namespace Domain.Contracts.Repositories;
 
-public interface IEthAskRepository: IBitstampRepository<EthAsk>
+public interface IEthAskRepository: IBitstampRepository
 {
 }
 
-public interface IEthBidRepository : IBitstampRepository<EthBid>
+public interface IEthBidRepository : IBitstampRepository
 {
 }
 
-public interface IBtcAskRepository : IBitstampRepository<BtcAsk>
+public interface IBtcAskRepository : IBitstampRepository
 {
 }
-public interface IBtcBidRepository : IBitstampRepository<BtcBid>
+public interface IBtcBidRepository : IBitstampRepository
 {
 }

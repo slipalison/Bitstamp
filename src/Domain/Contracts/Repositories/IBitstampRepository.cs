@@ -1,17 +1,23 @@
 ﻿using Domain.Models.AggregationMetrics;
 using Responses;
+using System.Security.Principal;
 
 namespace Domain.Contracts.Repositories;
 
-public interface IBitstampRepository<TEntity> where TEntity : class
+public interface IBitstampRepository//<TEntity> where TEntity : class
 {
+    Task InsertOrUpdateRangeAsync(List<IEntity> entities, CancellationToken cancellationToken);
 
-    Task InsertOrUpdateRangeAsync(List<TEntity> entities, CancellationToken cancellationToken);
+    Task<Metric?> GetMetrics(CancellationToken cancellationToken);
+}
 
-    //Task<List<ToDoItemEntity>> GetAll(CancellationToken cancellationToken = default);
-    //Task<ToDoItemEntity> Create(ToDoItemEntity accountPlanEntity, CancellationToken cancellationToken = default);
-    //Task<Result<ToDoItemEntity>> Update(ToDoItemEntity entity, CancellationToken cancellationToken = default);
-    Task<Result> Delete(Guid id, CancellationToken cancellationToken = default);
+public interface IEntity {
+     Guid Id { get; set; } 
+    DateTimeOffset InsertAt { get; set; }
+    long Timestamp { get; set; }
+    long Microtimestamp { get; set; }
+    decimal Price { get; set; }
+    decimal Amount { get; set; }
 
-    Task<Metric> GetMetrics(CancellationToken cancellationToken);
+    IEntity UpdateTimeStamp(long timestamp, long microtimestamp);
 }

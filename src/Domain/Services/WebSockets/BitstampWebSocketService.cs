@@ -5,7 +5,7 @@ using System.Net.WebSockets;
 using System.Text;
 using System.Text.Json;
 
-namespace Infra.WebSockets;
+namespace Domain.Contracts.Services.WebSockets;
 public abstract class BitstampWebSocket<T> : IOrderBookService, IDisposable where T : BitstampWebSocket<T>
 {
     private readonly string _wsUrl;

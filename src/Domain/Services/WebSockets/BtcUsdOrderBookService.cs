@@ -5,7 +5,7 @@ using Domain.Models.AggregationBook;
 using Microsoft.Extensions.Logging;
 using System.Net.WebSockets;
 
-namespace Infra.WebSockets;
+namespace Domain.Contracts.Services.WebSockets;
 
 public class BtcUsdOrderBookService : BitstampWebSocket<BtcUsdOrderBookService>, IBtcUsdOrderBookService
 {

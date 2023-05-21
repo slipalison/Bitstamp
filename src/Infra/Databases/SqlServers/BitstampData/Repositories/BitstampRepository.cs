@@ -7,7 +7,7 @@ using Responses;
 
 namespace Infra.Databases.SqlServers.BitstampData.Repositories;
 
-public abstract class BitstampRepository<TEntity> : IBitstampRepository<TEntity> where TEntity : BaseItemBook<TEntity>, new()
+public abstract class BitstampRepository<TEntity> : IBitstampRepository where TEntity : class, IEntity, new()
 {
     private readonly BitstampContext _context;
     private readonly DbSet<TEntity> _dbSet;
@@ -17,7 +17,7 @@ public abstract class BitstampRepository<TEntity> : IBitstampRepository<TEntity>
         _dbSet = _context.Set<TEntity>();
     }
 
-    public async Task InsertOrUpdateRangeAsync(List<TEntity> entities, CancellationToken cancellationToken)
+    public async Task InsertOrUpdateRangeAsync(List<IEntity> entities, CancellationToken cancellationToken)
     {
 
         try
@@ -28,7 +28,7 @@ public abstract class BitstampRepository<TEntity> : IBitstampRepository<TEntity>
 
             for (int i = 0; i < entities.Count; i++)
             {
-                TEntity? e = entities[i];
+                TEntity? e = (TEntity?)entities[i];
                 var en = await _dbSet.FirstOrDefaultAsync(a => a.Amount == e.Amount && a.Price == e.Price, cancellationToken);
                 if (en != null)
                 {
@@ -50,15 +50,13 @@ public abstract class BitstampRepository<TEntity> : IBitstampRepository<TEntity>
 
     }
 
-    public async Task<Metric> GetMetrics(CancellationToken cancellationToken)
+    public async Task<Metric?> GetMetrics(CancellationToken cancellationToken)
     {
         var tableName = _context.Model.FindEntityType(typeof(TEntity))!.GetTableName();
 
-        try
-        {
-            var cteQuery =  _context.Metrics
-                .FromSqlRaw(
-                $@"WITH cte AS (SELECT TOP 100 Id,
+        var cteQuery = await _context.Metrics
+            .FromSqlRaw(
+            $@"WITH cte AS (SELECT TOP 100 Id,
                                         InsertAt,
                                         [Timestamp],
                                         Microtimestamp,
@@ -75,53 +73,10 @@ public abstract class BitstampRepository<TEntity> : IBitstampRepository<TEntity>
                         WHERE InsertAt >= (SELECT TOP 1 DATEADD(second, -5, MAX(InsertAt)) FROM cte)) AS mediaPrice5
             FROM cte
             OPTION (RECOMPILE)")
-            .AsNoTracking().AsEnumerable()
-            .FirstOrDefault();
+        .AsNoTracking()
+        .ToListAsync(cancellationToken);
 
-            return cteQuery;
-        }
-        catch (Exception e)
-        {
-
-            throw;
-        }
-
-    }
-
-    //public Task<List<TEntity>> GetAll(CancellationToken cancellationToken = default)
-    //{
-    //    return _context.ToDos.ToListAsync(cancellationToken);
-    //}
-
-    //public async Task<TEntity> Create(TEntity accountPlanEntity,
-    //    CancellationToken cancellationToken = default)
-    //{
-    //    var ent = await _context.AddAsync(accountPlanEntity, cancellationToken);
-    //    await _context.SaveChangesAsync(cancellationToken);
-
-    //    return ent.Entity;
-    //}
-
-    //public async Task<Result<TEntity>> Update(TEntity entity, CancellationToken cancellationToken = default)
-    //{
-
-    //    await _context.SaveChangesAsync(cancellationToken);
-
-    //    return Result.Ok();
-    //}
-
-    public async Task<Result> Delete(Guid id, CancellationToken cancellationToken = default)
-    {
-        //var entitie =
-        //    await _context.ToDos.FindAsync(new object?[] { id },
-        //        cancellationToken: cancellationToken);
-
-        //if (entitie == null) return Result.Fail("404", "Tarefa não encontrada");
-
-        //_context.ToDos.Remove(entitie);
-        //await _context.SaveChangesAsync(cancellationToken);
-
-        return Result.Ok();
+        return cteQuery.FirstOrDefault();
     }
 }
 
