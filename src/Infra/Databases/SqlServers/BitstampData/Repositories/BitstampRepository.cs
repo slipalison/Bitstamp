@@ -79,6 +79,8 @@ public abstract class BitstampRepository<TEntity> : IBitstampRepository where TE
             return exists;
         
         var tableName = _context.Model.FindEntityType(typeof(TEntity))!.GetTableName();
+
+        var ascOrDesc = tableName.Contains("Bid", StringComparison.InvariantCultureIgnoreCase) ? "desc" : "asc";
         var cteQuery = await _context.OrderItems
         .FromSqlRaw(
         $@"SELECT Amount, Price, InsertAt
@@ -87,7 +89,7 @@ public abstract class BitstampRepository<TEntity> : IBitstampRepository where TE
                     FROM Bitstamp.dbo.{tableName} WITH (NOLOCK)
             ) AS subquery
             WHERE Amount = {amout} or running_sum <= {amout}
-            order by Price asc, InsertAt desc
+            order by Price {ascOrDesc}, InsertAt desc
             OPTION (RECOMPILE)").AsNoTracking().ToListAsync(cancellationToken);
 
         return cteQuery;
