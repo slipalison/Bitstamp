@@ -1,5 +1,6 @@
 ﻿using Domain.Contracts.Repositories;
 using Domain.Models.AggregationMetrics;
+using Domain.Models.AggregationOrder;
 using EFCore.BulkExtensions;
 using Microsoft.EntityFrameworkCore;
 
@@ -71,7 +72,12 @@ public abstract class BitstampRepository<TEntity> : IBitstampRepository where TE
 
     public async Task<List<OrderItem>> ListItensBookToOrder(decimal amout, CancellationToken cancellationToken)
     {
+        var exists = await _dbSet.Where(x => x.Amount == amout).Select(x => new OrderItem(x.Amount, x.Price, x.InsertAt))
+                .ToListAsync(cancellationToken);
 
+        if (exists.Any())
+            return exists;
+        
         var tableName = _context.Model.FindEntityType(typeof(TEntity))!.GetTableName();
         var cteQuery = await _context.OrderItems
         .FromSqlRaw(
@@ -80,7 +86,7 @@ public abstract class BitstampRepository<TEntity> : IBitstampRepository where TE
                 SELECT InsertAt, Price, Amount, SUM(Amount) OVER (ORDER BY Amount) AS running_sum
                     FROM Bitstamp.dbo.{tableName} WITH (NOLOCK)
             ) AS subquery
-            WHERE running_sum <= {amout}
+            WHERE Amount = {amout} or running_sum <= {amout}
             order by Price asc, InsertAt desc
             OPTION (RECOMPILE)").AsNoTracking().ToListAsync(cancellationToken);
 
@@ -88,5 +94,10 @@ public abstract class BitstampRepository<TEntity> : IBitstampRepository where TE
 
     }
 
+    public async Task SaveOrder(Order order, CancellationToken cancellationToken)
+    {
+        await _context.Orders.AddAsync(order, cancellationToken);
+        await _context.SaveChangesAsync(cancellationToken);
+    }
 }
 

@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -74,10 +75,34 @@ namespace Infra.Migrations
                     table.PrimaryKey("PK_EthBids", x => x.Id);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Orders",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Amount = table.Column<decimal>(type: "decimal(18,8)", precision: 18, scale: 8, nullable: false),
+                    Crypto = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Stock = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Type = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Price = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
+                    AmountTotal = table.Column<decimal>(type: "decimal(18,8)", precision: 18, scale: 8, nullable: false),
+                    InsertAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Orders", x => x.Id);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_BtcAsks_Amount",
                 table: "BtcAsks",
                 column: "Amount");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BtcAsks_Amount_Price",
+                table: "BtcAsks",
+                columns: new[] { "Amount", "Price" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_BtcAsks_InsertAt",
@@ -95,6 +120,12 @@ namespace Infra.Migrations
                 column: "Amount");
 
             migrationBuilder.CreateIndex(
+                name: "IX_BtcBids_Amount_Price",
+                table: "BtcBids",
+                columns: new[] { "Amount", "Price" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_BtcBids_InsertAt",
                 table: "BtcBids",
                 column: "InsertAt");
@@ -108,6 +139,12 @@ namespace Infra.Migrations
                 name: "IX_EthAsks_Amount",
                 table: "EthAsks",
                 column: "Amount");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_EthAsks_Amount_Price",
+                table: "EthAsks",
+                columns: new[] { "Amount", "Price" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_EthAsks_InsertAt",
@@ -125,6 +162,12 @@ namespace Infra.Migrations
                 column: "Amount");
 
             migrationBuilder.CreateIndex(
+                name: "IX_EthBids_Amount_Price",
+                table: "EthBids",
+                columns: new[] { "Amount", "Price" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_EthBids_InsertAt",
                 table: "EthBids",
                 column: "InsertAt");
@@ -133,6 +176,11 @@ namespace Infra.Migrations
                 name: "IX_EthBids_Price",
                 table: "EthBids",
                 column: "Price");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Orders_InsertAt",
+                table: "Orders",
+                column: "InsertAt");
         }
 
         /// <inheritdoc />
@@ -149,6 +197,9 @@ namespace Infra.Migrations
 
             migrationBuilder.DropTable(
                 name: "EthBids");
+
+            migrationBuilder.DropTable(
+                name: "Orders");
         }
     }
 }

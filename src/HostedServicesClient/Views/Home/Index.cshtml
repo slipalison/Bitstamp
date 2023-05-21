@@ -9,7 +9,7 @@
 
 
     <main>
-        <div class="container d-flex flex-column justify-content-center align-items-center" style="height: 70vh;">
+        <div class="container d-flex flex-column justify-content-center align-items-center" >
             <h1>Produtos</h1>
             <p>Itens atualizados a cada 5 segundos via websocket.</p>
             <table class="table table-striped table-hover">
@@ -35,13 +35,55 @@
                         <option value="BTC" selected>BTC</option>
                         <option value="ETH">ETH</option>
                     </select>
-                    <button class="btn btn-outline-secondary" type="button">Comprar</button>
-                    <button class="btn btn-outline-secondary" type="button">Vender</button>
+                    <button id="comprar" class="btn btn-outline-secondary" type="button">Comprar</button>
+                    <button id="vender" class="btn btn-outline-secondary" type="button">Vender</button>
                 </div>
             </div>
-     
+            <hr />
 
+            <h2>Transação</h2>
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>Numero da Transação</th>
+                        <th>Crypto</th>
+                        <th>Quantidade total</th>
+                        <th>Quantidade Solicitada</th>
+                        <th>Preço</th>
+                        <th>Tipo da Transação</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td name="id"></td>
+                        <td name="crypto"></td>
+                        <td name="amountTotal"></td>
+                        <td name="amount"></td>
+                        <td name="price"></td>
+                        <td name="type"></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Itens da transação</h3>
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>
+                            Quantidade
+                        </th>
+                        <th>
+                            Valor
+                        </th>
+                    </tr>
+                </thead>
+                <tbody id="itens">
+                 
+                </tbody>
+            </table>
         </div>
+
+        @*{amount: 0.01402302, price: 27169, insertAt: '2023-05-21T03:24:29.412+00:00'}*@
 
 
 
@@ -53,12 +95,98 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.1/signalr.js"></script>
     <script>
+
+
+        const idElement = document.querySelector('td[name="id"]');
+        const cryptoElement = document.querySelector('td[name="crypto"]');
+        const amountTotalElement = document.querySelector('td[name="amountTotal"]');
+        const amountElement = document.querySelector('td[name="amount"]');
+        const priceElement = document.querySelector('td[name="price"]');
+        const typeElement = document.querySelector('td[name="type"]');
+
+        const tableItens = document.getElementById("itens");
+
+
+
+        const resposta = function (response) {
+
+            idElement.textContent = response.id;
+            cryptoElement.textContent = response.crypto;
+            amountTotalElement.textContent = response.amountTotal;
+            amountElement.textContent = response.amount;
+            priceElement.textContent = response.price.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+            typeElement.textContent = response.type == "Buy" ? "Compra" : "Venda";
+
+            
+            $("#itens").empty();
+            
+            response.stock.forEach(function(x){
+                $("#itens")
+                    .append(
+                        `<tr>
+                        <td>${x.amount}</td>
+                        <td>${x.price.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}</td>
+                             </tr>`);
+            })
+
+            
+
+
+            console.log(response);
+        }
+
+
+
+
+
+
         const inputNumero = document.getElementById("number");
         inputNumero.addEventListener("input", function () {
             if (this.value < 0) {
                 this.value = 0;
             }
         });
+
+        const selectType = document.getElementById("type");
+
+        const btnComprar = document.getElementById("comprar");
+        btnComprar.addEventListener("click", function () {
+            var settings = {
+                "url": "https://localhost:7262/api/V1/Order/buy",
+                "method": "POST",
+                "timeout": 0,
+                "headers": {
+                    "accept": "*/*",
+                    "Content-Type": "application/json"
+                },
+                "data": JSON.stringify({
+                    "amount": inputNumero.value,
+                    "typeCripto": selectType.value
+                }),
+            };
+            $.ajax(settings).done(resposta);
+        });
+
+
+        const btnVender = document.getElementById("vender");
+        btnVender.addEventListener("click", function () {
+            var settings = {
+                "url": "https://localhost:7262/api/V1/Order/sell",
+                "method": "POST",
+                "timeout": 0,
+                "headers": {
+                    "accept": "*/*",
+                    "Content-Type": "application/json"
+                },
+                "data": JSON.stringify({
+                    "amount": inputNumero.value,
+                    "typeCripto": selectType.value
+                }),
+            };
+            $.ajax(settings).done(resposta);
+        });
+
+
 
 
         const connection = new signalR.HubConnectionBuilder()
@@ -71,38 +199,39 @@
 
                 connection.on("AtualizarProdutos", (produtos) => {
                     $("#produtos").empty();
-                    $("#produtos").append(`<tr>
-                                    <td>BTC Bids</td>
-                                    <td>USD $ ${produtos.btcBid.minPrice.toFixed(2)}</td>
-                                    <td>USD $ ${produtos.btcBid.maxPrice.toFixed(2)}</td>
-                                    <td>BTC ${produtos.btcBid.mediaAmount.toFixed(2)}</td>
-                                    <td>USD $ ${produtos.btcBid.mediaPrice.toFixed(2)}</td>
-                                    <td>USD $ ${produtos.btcBid.mediaPrice5.toFixed(2)}</td>
-                                    </tr>
-                                    <tr>
-                                    <td>BTC Asks</td>
-                                    <td>USD $ ${produtos.btcAsk.minPrice.toFixed(2)}</td>
-                                    <td>USD $ ${produtos.btcAsk.maxPrice.toFixed(2)}</td>
-                                    <td>BTC ${produtos.btcAsk.mediaAmount}</td>
-                                    <td>USD $ ${produtos.btcAsk.mediaPrice.toFixed(2)}</td>
-                                    <td>USD $ ${produtos.btcAsk.mediaPrice5.toFixed(2)}</td>
-                                    </tr>
-                                    <tr>
-                                    <td>ETH Bids</td>
-                                    <td>USD $ ${produtos.ethBid.minPrice.toFixed(2)}</td>
-                                    <td>USD $ ${produtos.ethBid.maxPrice.toFixed(2)}</td>
-                                    <td>ETH ${produtos.ethBid.mediaAmount}</td>
-                                    <td>USD $ ${produtos.ethBid.mediaPrice.toFixed(2)}</td>
-                                    <td>USD $ ${produtos.ethBid.mediaPrice5.toFixed(2)}</td>
-                                    </tr>
-                                    <tr>
-                                    <td>ETH Asks</td>
-                                    <td>USD $ ${produtos.ethAsk.minPrice.toFixed(2)}</td>
-                                    <td>USD $ ${produtos.ethAsk.maxPrice.toFixed(2)}</td>
-                                    <td>ETH ${produtos.ethAsk.mediaAmount}</td>
-                                    <td>USD $ ${produtos.ethAsk.mediaPrice.toFixed(2)}</td>
-                                    <td>USD $ ${produtos.ethAsk.mediaPrice5.toFixed(2)}</td>
-                                    </tr>`);
+                    $("#produtos")
+                        .append(`<tr>
+                            <td>BTC Bids</td>
+                            <td>USD $ ${produtos.btcBid.minPrice.toFixed(2)}</td>
+                            <td>USD $ ${produtos.btcBid.maxPrice.toFixed(2)}</td>
+                            <td>BTC ${produtos.btcBid.mediaAmount.toFixed(2)}</td>
+                            <td>USD $ ${produtos.btcBid.mediaPrice.toFixed(2)}</td>
+                            <td>USD $ ${produtos.btcBid.mediaPrice5.toFixed(2)}</td>
+                            </tr>
+                            <tr>
+                            <td>BTC Asks</td>
+                            <td>USD $ ${produtos.btcAsk.minPrice.toFixed(2)}</td>
+                            <td>USD $ ${produtos.btcAsk.maxPrice.toFixed(2)}</td>
+                            <td>BTC ${produtos.btcAsk.mediaAmount}</td>
+                            <td>USD $ ${produtos.btcAsk.mediaPrice.toFixed(2)}</td>
+                            <td>USD $ ${produtos.btcAsk.mediaPrice5.toFixed(2)}</td>
+                            </tr>
+                            <tr>
+                            <td>ETH Bids</td>
+                            <td>USD $ ${produtos.ethBid.minPrice.toFixed(2)}</td>
+                            <td>USD $ ${produtos.ethBid.maxPrice.toFixed(2)}</td>
+                            <td>ETH ${produtos.ethBid.mediaAmount}</td>
+                            <td>USD $ ${produtos.ethBid.mediaPrice.toFixed(2)}</td>
+                            <td>USD $ ${produtos.ethBid.mediaPrice5.toFixed(2)}</td>
+                            </tr>
+                            <tr>
+                            <td>ETH Asks</td>
+                            <td>USD $ ${produtos.ethAsk.minPrice.toFixed(2)}</td>
+                            <td>USD $ ${produtos.ethAsk.maxPrice.toFixed(2)}</td>
+                            <td>ETH ${produtos.ethAsk.mediaAmount}</td>
+                            <td>USD $ ${produtos.ethAsk.mediaPrice.toFixed(2)}</td>
+                            <td>USD $ ${produtos.ethAsk.mediaPrice5.toFixed(2)}</td>
+                            </tr>`);
                 });
             })
             .catch((error) => {

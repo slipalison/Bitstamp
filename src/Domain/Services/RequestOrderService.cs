@@ -25,8 +25,9 @@ public class RequestOrderService : IRequestOrderService
         createOrder.Amount,
         createOrder.TypeCripto,
         list.ToArray(),
-        typeOrder
-    );
+        typeOrder    );
+
+        await repo.SaveOrder(t, cancellationToken);
 
         return t;
     }

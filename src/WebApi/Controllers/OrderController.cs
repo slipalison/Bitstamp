@@ -29,11 +29,19 @@ public class OrderController : ControllerBase
     }
 
     [HttpPost("buy")]
-    public async Task<ActionResult> Post([FromBody] CreateOrder createOrder, CancellationToken cancellationToken)
+    public async Task<ActionResult> PostBuy([FromBody] CreateOrder createOrder, CancellationToken cancellationToken)
     {
         var result = await _requestOrderService.CreateAsync(createOrder, TypeOrder.Buy, cancellationToken);
 
         return Ok(result);
     }
 
+
+    [HttpPost("sell")]
+    public async Task<ActionResult> PostSell([FromBody] CreateOrder createOrder, CancellationToken cancellationToken)
+    {
+        var result = await _requestOrderService.CreateAsync(createOrder, TypeOrder.Sell, cancellationToken);
+
+        return Ok(result);
+    }
 }

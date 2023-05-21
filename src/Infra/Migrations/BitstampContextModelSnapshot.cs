@@ -22,7 +22,7 @@ namespace Infra.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Domain.Models.BtcAsk", b =>
+            modelBuilder.Entity("Domain.Models.AggregationBook.BtcAsk", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -59,7 +59,7 @@ namespace Infra.Migrations
                     b.ToTable("BtcAsks");
                 });
 
-            modelBuilder.Entity("Domain.Models.BtcBid", b =>
+            modelBuilder.Entity("Domain.Models.AggregationBook.BtcBid", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -96,7 +96,7 @@ namespace Infra.Migrations
                     b.ToTable("BtcBids");
                 });
 
-            modelBuilder.Entity("Domain.Models.EthAsk", b =>
+            modelBuilder.Entity("Domain.Models.AggregationBook.EthAsk", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -133,7 +133,7 @@ namespace Infra.Migrations
                     b.ToTable("EthAsks");
                 });
 
-            modelBuilder.Entity("Domain.Models.EthBid", b =>
+            modelBuilder.Entity("Domain.Models.AggregationBook.EthBid", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -168,6 +168,46 @@ namespace Infra.Migrations
                         .IsUnique();
 
                     b.ToTable("EthBids");
+                });
+
+            modelBuilder.Entity("Domain.Models.AggregationOrder.Order", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("Amount")
+                        .HasPrecision(18, 8)
+                        .HasColumnType("decimal(18,8)");
+
+                    b.Property<decimal>("AmountTotal")
+                        .HasPrecision(18, 8)
+                        .HasColumnType("decimal(18,8)");
+
+                    b.Property<string>("Crypto")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset>("InsertAt")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<decimal>("Price")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("Stock")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("InsertAt");
+
+                    b.ToTable("Orders");
                 });
 #pragma warning restore 612, 618
         }
