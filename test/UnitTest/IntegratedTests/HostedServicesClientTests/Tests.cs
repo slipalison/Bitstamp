@@ -10,13 +10,12 @@ namespace UnitTest.IntegratedTests.HostedServicesClientTests
         }
 
         [Fact]
-        public async Task Test() {
-
+        public async Task Test()
+        {
             var t = await CallHttp("").GetAsync();
 
             Assert.NotNull(t);
             Assert.True(t.StatusCode == 200);
-
         }
     }
 }

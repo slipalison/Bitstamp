@@ -22,7 +22,6 @@ namespace UnitTest.IntegratedTests.WebApi
             Assert.True(t.IsSuccess);
         }
 
-
         [Theory]
         [InlineData(2.0, TypeCripto.BTC)]
         [InlineData(1.0, TypeCripto.ETH)]
@@ -32,6 +31,5 @@ namespace UnitTest.IntegratedTests.WebApi
             Assert.NotNull(t);
             Assert.True(t.IsSuccess);
         }
-
     }
 }

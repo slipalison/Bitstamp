@@ -9,7 +9,6 @@ namespace HostedServicesClient;
 
 public class Startup : BaseStartup
 {
-
     public Startup(IConfiguration configuration) : base(configuration)
     {
     }

@@ -63,7 +63,6 @@ public class CustomWebApplicationFactory<TProgram>
 
     private static void ConfigRepo(params IBitstampRepository[] bitstampRepository)
     {
-
         foreach (var bitstamp in bitstampRepository)
         {
             bitstamp.GetMetrics(Arg.Any<CancellationToken>()).ReturnsForAnyArgs(Task.FromResult(new Metric(10, 11, 5, 6, 12)));
@@ -78,7 +77,6 @@ public class CustomWebApplicationFactory<TProgram>
 
             bitstamp.InsertOrUpdateRangeAsync(Arg.Any<List<IEntity>>(), Arg.Any<CancellationToken>()).ReturnsForAnyArgs(Task.CompletedTask);
             bitstamp.SaveOrder(Arg.Any<Order>(), Arg.Any<CancellationToken>()).ReturnsForAnyArgs(Task.CompletedTask);
-
         }
     }
 }

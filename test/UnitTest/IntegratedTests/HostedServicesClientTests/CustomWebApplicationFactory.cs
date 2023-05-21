@@ -1,6 +1,4 @@
 ﻿using Domain.Contracts.Repositories;
-using Domain.Models.AggregationMetrics;
-using Domain.Models.AggregationOrder;
 using Infra.Databases.SqlServers.BitstampData;
 using Infra.Databases.SqlServers.BitstampData.Repositories;
 using Microsoft.AspNetCore.Hosting;
@@ -19,8 +17,6 @@ public class CustomWebApplicationFactory<TProgram>
     {
         builder.ConfigureServices(services =>
         {
-
-            //  BitstampContext
             var serviceProvider = services.BuildServiceProvider();
             var myService = serviceProvider.GetService<BitstampContext>();
 
@@ -28,8 +24,6 @@ public class CustomWebApplicationFactory<TProgram>
             var IBtcBidRepository = Substitute.ForPartsOf<BtcBidRepository>(myService);
             var IEthAskRepository = Substitute.ForPartsOf<EthAskRepository>(myService);
             var IEthBidRepository = Substitute.ForPartsOf<EthBidRepository>(myService);
-
-            ConfigRepo(IBtcAskRepository, IBtcBidRepository, IEthAskRepository, IEthBidRepository);
 
             services.AddScoped<IBtcAskRepository>(x => IBtcAskRepository);
             services.AddScoped<IBtcBidRepository>(x => IBtcBidRepository);
@@ -61,13 +55,4 @@ public class CustomWebApplicationFactory<TProgram>
             options.UseSqlite(connection);
         });
     }
-
-    private static void ConfigRepo(params IBitstampRepository[] bitstampRepository)
-    {
-
-        foreach (var bitstamp in bitstampRepository)
-        {
-           // bitstamp.GetMetrics(Arg.Any<CancellationToken>()).Returns<Task<Metric>>(Task.FromResult(new Metric(10, 11, 5, 6, 12)));
-        }
-    }
-} 
+}

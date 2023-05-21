@@ -82,7 +82,7 @@ public abstract class BitstampRepository<TEntity> : IBitstampRepository where TE
 
         var tableName = _context.Model.FindEntityType(typeof(TEntity))!.GetTableName();
         var ascOrDesc = tableName!.Contains("Bid", StringComparison.InvariantCultureIgnoreCase) ? "desc" : "asc";
-       
+
         var cteQuery = await _context.OrderItems.FromSqlRaw(
         $@"SELECT Amount, Price, InsertAt
         FROM (
