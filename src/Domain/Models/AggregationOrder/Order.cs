@@ -1,16 +1,17 @@
 ﻿using Domain.Commands;
+using Domain.Models.AggregationMetrics;
 
 namespace Domain.Models.AggregationOrder;
 
 public record Order(
     Guid Id,
-    double Amount,
+    decimal Amount,
     TypeCripto Crypto,
-    ItemOrder[] Stock,
+    OrderItem[] Stock,
     TypeOrder type
 )
 {
     public decimal Price { get => Stock.Sum(x=>x.Price);  }
-    public double AmountTotal { get => Stock.Sum(x=>x.Amount); }
+    public decimal AmountTotal { get => Stock.Sum(x=>x.Amount); }
 
 }

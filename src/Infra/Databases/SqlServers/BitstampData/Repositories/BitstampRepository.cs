@@ -1,9 +1,7 @@
 ﻿using Domain.Contracts.Repositories;
-using Domain.Models.AggregationBook;
 using Domain.Models.AggregationMetrics;
 using EFCore.BulkExtensions;
 using Microsoft.EntityFrameworkCore;
-using Responses;
 
 namespace Infra.Databases.SqlServers.BitstampData.Repositories;
 
@@ -20,33 +18,25 @@ public abstract class BitstampRepository<TEntity> : IBitstampRepository where TE
     public async Task InsertOrUpdateRangeAsync(List<IEntity> entities, CancellationToken cancellationToken)
     {
 
-        try
-        {
-            using var transaction = await _context.Database.BeginTransactionAsync(cancellationToken);
-            var timestamp = entities.First().Timestamp;
-            var microtimestamp = entities.First().Microtimestamp;
+        using var transaction = await _context.Database.BeginTransactionAsync(cancellationToken);
+        var timestamp = entities.First().Timestamp;
+        var microtimestamp = entities.First().Microtimestamp;
 
-            for (int i = 0; i < entities.Count; i++)
+        for (int i = 0; i < entities.Count; i++)
+        {
+            TEntity? e = (TEntity?)entities[i];
+            var en = await _dbSet.FirstOrDefaultAsync(a => a.Amount == e.Amount && a.Price == e.Price, cancellationToken);
+            if (en != null)
             {
-                TEntity? e = (TEntity?)entities[i];
-                var en = await _dbSet.FirstOrDefaultAsync(a => a.Amount == e.Amount && a.Price == e.Price, cancellationToken);
-                if (en != null)
-                {
-                    var up = en.UpdateTimeStamp(timestamp, microtimestamp);
-                    _context.Update(up);
-                    entities.RemoveAll(a => up.Amount == a.Amount && up.Price == a.Price);
-                    i--;
-                }
+                var up = en.UpdateTimeStamp(timestamp, microtimestamp);
+                _context.Update(up);
+                entities.RemoveAll(a => up.Amount == a.Amount && up.Price == a.Price);
+                i--;
             }
-            await _context.BulkInsertAsync(entities, cancellationToken: cancellationToken);
-            await _context.SaveChangesAsync(cancellationToken);
-            await transaction.CommitAsync(cancellationToken);
         }
-        catch (Exception e)
-        {
-            // TODO: Validar a necessidade 
-
-        }
+        await _context.BulkInsertAsync(entities, cancellationToken: cancellationToken);
+        await _context.SaveChangesAsync(cancellationToken);
+        await transaction.CommitAsync(cancellationToken);
 
     }
 
@@ -78,5 +68,25 @@ public abstract class BitstampRepository<TEntity> : IBitstampRepository where TE
 
         return cteQuery.FirstOrDefault();
     }
+
+    public async Task<List<OrderItem>> ListItensBookToOrder(decimal amout, CancellationToken cancellationToken)
+    {
+
+        var tableName = _context.Model.FindEntityType(typeof(TEntity))!.GetTableName();
+        var cteQuery = await _context.OrderItems
+        .FromSqlRaw(
+        $@"SELECT Amount, Price, InsertAt
+            FROM (
+                SELECT InsertAt, Price, Amount, SUM(Amount) OVER (ORDER BY Amount) AS running_sum
+                    FROM Bitstamp.dbo.{tableName} WITH (NOLOCK)
+            ) AS subquery
+            WHERE running_sum <= {amout}
+            order by Price asc, InsertAt desc
+            OPTION (RECOMPILE)").AsNoTracking().ToListAsync(cancellationToken);
+
+        return cteQuery;
+
+    }
+
 }
 

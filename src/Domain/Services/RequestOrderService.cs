@@ -1,5 +1,6 @@
 ﻿using Domain.Commands;
 using Domain.Contracts.Repositories;
+using Domain.Contracts.Services;
 using Domain.Models.AggregationOrder;
 
 namespace Domain.Services;
@@ -14,23 +15,19 @@ public class RequestOrderService : IRequestOrderService
         _repositoryFabric = repositoryFabric;
         _correlation = correlation;
     }
-    public Task<Order> CreateAsync(CreateOrder createOrder, TypeOrder typeOrder, CancellationToken cancellationToken)
+    public async Task<Order> CreateAsync(CreateOrder createOrder, TypeOrder typeOrder, CancellationToken cancellationToken)
     {
-        var t = new Order(
-            _correlation.GetCorrelationId(),
-            createOrder.Amount,
-            createOrder.TypeCripto,
-            new[] { new ItemOrder { Price = 27000.00m, Amount = 0.00669 } },
-            typeOrder
-        );
-
         var repo = _repositoryFabric.GetRepositoryToOrder(typeOrder, createOrder.TypeCripto);
+        var list = await repo.ListItensBookToOrder(createOrder.Amount, cancellationToken);
 
-        return Task.FromResult(t);
+        var t = new Order(
+        _correlation.GetCorrelationId(),
+        createOrder.Amount,
+        createOrder.TypeCripto,
+        list.ToArray(),
+        typeOrder
+    );
+
+        return t;
     }
-}
-
-public interface IRequestOrderService
-{
-    Task<Order> CreateAsync(CreateOrder createOrder, TypeOrder typeOrder, CancellationToken cancellationToken);
 }

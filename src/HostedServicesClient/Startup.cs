@@ -1,13 +1,8 @@
 ﻿using System.Net.WebSockets;
-using System.Text.Json.Serialization;
-using System.Text.Json;
 using Infra;
-using Infra.ConfigsExtensions;
 using Infra.Databases.SqlServers.BitstampData.Extensions;
 using Infra.Middlewares;
 using Infra.WebSockets.HostedServices;
-using Microsoft.AspNetCore.ResponseCompression;
-using Microsoft.OpenApi.Models;
 using HostedServicesClient.WebSockets;
 
 namespace HostedServicesClient;

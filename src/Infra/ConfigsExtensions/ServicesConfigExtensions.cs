@@ -1,4 +1,5 @@
 ﻿using Domain.Contracts.Repositories;
+using Domain.Contracts.Services;
 using Domain.Contracts.Services.WebSockets;
 using Domain.Contracts.WebSockets;
 using Domain.Services;

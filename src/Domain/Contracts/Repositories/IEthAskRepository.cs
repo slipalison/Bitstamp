@@ -1,6 +1,4 @@
-﻿using Domain.Models.AggregationBook;
-
-namespace Domain.Contracts.Repositories;
+﻿namespace Domain.Contracts.Repositories;
 
 public interface IEthAskRepository: IBitstampRepository
 {

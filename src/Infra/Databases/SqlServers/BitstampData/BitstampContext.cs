@@ -17,11 +17,13 @@ public class BitstampContext : DbContext
     public DbSet<BtcBid> BtcBids { get; set; }
     public DbSet<BtcAsk> BtcAsks { get; set; }
     public DbSet<Metric> Metrics { get; set; }
+    public DbSet<OrderItem> OrderItems { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(EthBidEntityConfiguration).Assembly);
 
         modelBuilder.Entity<Metric>().HasNoKey();
+        modelBuilder.Entity<OrderItem>().HasNoKey();
     }
 }

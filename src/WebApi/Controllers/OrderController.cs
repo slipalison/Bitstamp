@@ -1,4 +1,5 @@
 ﻿using Domain.Commands;
+using Domain.Contracts.Services;
 using Domain.Models.AggregationOrder;
 using Domain.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -30,9 +31,7 @@ public class OrderController : ControllerBase
     [HttpPost("buy")]
     public async Task<ActionResult> Post([FromBody] CreateOrder createOrder, CancellationToken cancellationToken)
     {
-        
-
-        Order result = await _requestOrderService.CreateAsync(createOrder, TypeOrder.Buy, cancellationToken);
+        var result = await _requestOrderService.CreateAsync(createOrder, TypeOrder.Buy, cancellationToken);
 
         return Ok(result);
     }

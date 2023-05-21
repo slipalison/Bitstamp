@@ -5,8 +5,8 @@ namespace Domain.Commands;
 
 public record CreateOrder
 {
-    [Range(0, double.MaxValue, ErrorMessage = "O valor deve ser maior que 0.")]
-    public double Amount { get; set; }
+    [Range(0.00000001, double.MaxValue, ErrorMessage = "O valor deve ser maior ou iqual a 0.00000001.")]
+    public decimal Amount { get; set; }
     public TypeCripto TypeCripto { get; set; }
 }
 
