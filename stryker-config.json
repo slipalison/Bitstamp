@@ -3,7 +3,7 @@
     "mutate": [
       "src/**/*.cs"
     ],
-    "testProjects": [
+    "test-projects": [
       "test/UnitTest/UnitTest.csproj"
     ],
     "thresholds": {
