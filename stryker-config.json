@@ -1,21 +1,23 @@
 {
-  "mutation": {
-    "maxConcurrentTestRunners": 4,
-    "input": [
-      "src/**/*.cs"
+  "stryker-config": {
+    "mutation": {
+      "maxConcurrentTestRunners": 4,
+      "input": [
+        "src/**/*.cs"
+      ],
+      "testProjects": [
+        "test/UnitTest/UnitTest.csproj"
+      ]
+    },
+    "thresholds": {
+      "high": 80,
+      "low": 60,
+      "break": 0
+    },
+    "reporters": [
+      "progress",
+      "html"
     ],
-    "testProjects": [
-      "test/UnitTest/UnitTest.csproj"
-    ]
-  },
-  "thresholds": {
-    "high": 80,
-    "low": 60,
-    "break": 0
-  },
-  "reporters": [
-    "progress",
-    "html"
-  ],
-  "timeoutMS": 5000
+    "timeoutMS": 5000
+  }
 }
