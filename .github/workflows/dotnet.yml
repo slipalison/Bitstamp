@@ -52,8 +52,9 @@ jobs:
         mkdir -p ${{ github.workspace }}/reports
         cp -R ./reports ${{ github.workspace }}/reports
       # Upload report as an artifact
-      - name: Upload Report
-        uses: actions/upload-artifact@v2
+    
+    - name: Upload Report
+      uses: actions/upload-artifact@v2
         with:
           name: Stryker Report
           path: ${{ github.workspace }}/reports
