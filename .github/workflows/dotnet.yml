@@ -50,7 +50,7 @@ jobs:
     - name: Publish report
       run: |
         mkdir -p ${{ github.workspace }}/reports
-        cp -R ./reports ${{ github.workspace }}/reports
+        cp -R ./reports/. ${{ github.workspace }}/reports
       # Upload report as an artifact
     
     - name: Upload Report
