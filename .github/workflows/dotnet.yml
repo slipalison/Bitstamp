@@ -49,9 +49,14 @@ jobs:
     
     - name: Publish report
       run: |
-        mkdir -p ${{ github.workspace }}/reports
-        cp -R ./reports/. ${{ github.workspace }}/reports
+        mkdir -p ${{ github.workspace }}/tmp-reports
+        cp -R ./reports/. ${{ github.workspace }}/tmp-reports
       # Upload report as an artifact
+    
+    - name: Move reports to final directory
+      run: |
+        mv ${{ github.workspace }}/tmp-reports ${{ github.workspace }}/reports
+          # Upload report as an artifact
     
     - name: Upload Report
       uses: actions/upload-artifact@v2
