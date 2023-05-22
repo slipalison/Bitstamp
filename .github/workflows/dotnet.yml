@@ -89,13 +89,13 @@ jobs:
     - name: Build and publish Docker image
       uses: docker/build-push-action@v4.0.0
       with:
-        context: ./src/webapi
+        context: /src/webapi
         push: true
         tags: slipalison/bitstamp-api-slipalison:latest
     
     - name: Build and publish Docker image
       uses: docker/build-push-action@v4.0.0
       with:
-        context: ./src/HostedServicesClient
+        context: /src/HostedServicesClient
         push: true
         tags: slipalison/bitstamp-slipalison:latest
