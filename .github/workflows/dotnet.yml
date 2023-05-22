@@ -41,26 +41,46 @@ jobs:
         # Specify whether or not CI build should fail if Codecov runs into an error during upload
         #fail_ci_if_error: # optional
     
-    - name: Install Stryker.NET
-      run: dotnet tool install -g dotnet-stryker
+    # - name: Install Stryker.NET
+    #   run: dotnet tool install -g dotnet-stryker
 
-    - name: Run Stryker.NET
-      run: dotnet stryker
+    # - name: Run Stryker.NET
+    #   run: dotnet stryker
     
     # - name: Publish report
     #   run: |
-    #     mkdir -p ${{ github.workspace }}/tmp-reports
-    #     cp -R ./reports/. ${{ github.workspace }}/tmp-reports
+    #     mkdir -p ${{ github.workspace }}/StrykerOutput
+    #     cp -R ./reports/. ${{ github.workspace }}/StrykerOutput
     #   # Upload report as an artifact
     
     # - name: Move reports to final directory
     #   run: |
-    #     mv ${{ github.workspace }}/tmp-reports ${{ github.workspace }}/reports
+    #     mv ${{ github.workspace }}/StrykerOutput ${{ github.workspace }}/StrykerOutput
     #       # Upload report as an artifact
     
     # - name: Upload Report
     #   uses: actions/upload-artifact@v2
     #   with:
     #     name: Stryker Report
-    #     path: ${{ github.workspace }}/reports
+    #     path: ${{ github.workspace }}/StrykerOutput
 
+    - name: Login to Docker Hub
+    - name: Login to Docker Hub
+      uses: docker/login-action@v1
+      with:
+        username: slipalison
+        password: ${{ secrets.DOCKERHUBTOKEN }}
+
+    - name: Build and publish Docker image
+      uses: docker/build-push-action@v2
+      with:
+        context: ./src/webapi
+        push: true
+        tags: slipalison/bitstamp-api-slipalison:latest
+    
+    - name: Build and publish Docker image
+      uses: docker/build-push-action@v2
+      with:
+        context: ./src/HostedServicesClient
+        push: true
+        tags: slipalison/bitstamp-slipalison:latest
