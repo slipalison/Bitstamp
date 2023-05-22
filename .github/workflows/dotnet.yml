@@ -64,22 +64,37 @@ jobs:
     #     name: Stryker Report
     #     path: ${{ github.workspace }}/StrykerOutput
 
-    - name: Login to Docker Hub
-    - name: Login to Docker Hub
-      uses: docker/login-action@v1
+    - name: Docker Login
+      # You may pin to the exact commit or the version.
+      # uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a
+      uses: docker/login-action@v2.1.0
       with:
+        # Server address of Docker registry. If not set then will default to Docker Hub
+        # registry: # optional
+        # Username used to log against the Docker registry
         username: slipalison
+        # Password or personal access token used to log against the Docker registry
         password: ${{ secrets.DOCKERHUBTOKEN }}
+        # Specifies whether the given registry is ECR (auto, true or false)
+        # ecr: # optional, default is auto
+        # Log out from the Docker registry at the end of a job
+        #logout: # optional, default is true
+
+    # - name: Login to Docker Hub
+    #   uses: docker/login-action@v1
+    #   with:
+    #     username: slipalison
+    #     password: ${{ secrets.DOCKERHUBTOKEN }}
 
     - name: Build and publish Docker image
-      uses: docker/build-push-action@v2
+      uses: docker/build-push-action@v4.0.0
       with:
         context: ./src/webapi
         push: true
         tags: slipalison/bitstamp-api-slipalison:latest
     
     - name: Build and publish Docker image
-      uses: docker/build-push-action@v2
+      uses: docker/build-push-action@v4.0.0
       with:
         context: ./src/HostedServicesClient
         push: true
