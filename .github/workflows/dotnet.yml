@@ -66,6 +66,7 @@ jobs:
     - name: Build and publish Docker image
       uses: docker/build-push-action@v4.0.0
       with:
+        no-cache: true
         context: ./src/WebApi
         file: ./src/WebApi/DockerfilePublish
         push: true
@@ -78,3 +79,5 @@ jobs:
         file: ./src/WebApi/DockerfilePublish
         push: true
         tags: slipalison/bitstamp-slipalison:latest
+
+
