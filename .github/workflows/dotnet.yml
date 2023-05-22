@@ -68,8 +68,10 @@ jobs:
       uses: docker/build-push-action@v4.0.0
       with:
         no-cache: true
-        context: ./src/WebApi
-        file: ./src/WebApi/DockerfilePublish
+        #context: ./src/WebApi
+        context: .
+        #file: ./src/WebApi/DockerfilePublish
+        file: DockerfilePublish
         push: true
         tags: slipalison/bitstamp-api-slipalison:latest
     
