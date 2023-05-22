@@ -20,26 +20,27 @@ jobs:
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 7.0.x
+    
     - name: Restore dependencies
       run: dotnet restore
+    
     - name: Build
       run: dotnet build --no-restore
     
-    # - name: Run unit tests coverage
-    #   run: dotnet test /p:Configuration=Debug /p:CollectCoverage=true /p:CoverletOutputFormat=lcov /p:ThresholdType=line /p:CoverletOutput=./lcov --collect:"XPlat Code Coverage" --property:ExcludeByFile=\"*/Migrations/*\" test/UnitTest/UnitTest.csproj --no-build --no-restore --verbosity normal 
+    - name: Run unit tests coverage
+      run: dotnet test /p:Configuration=Debug /p:CollectCoverage=true /p:CoverletOutputFormat=lcov /p:ThresholdType=line /p:CoverletOutput=./lcov --collect:"XPlat Code Coverage" --property:ExcludeByFile=\"*/Migrations/*\" test/UnitTest/UnitTest.csproj --no-build --no-restore --verbosity normal 
     
-    # - name: Upload coverage reports to Codecov
-    #   uses: codecov/codecov-action@v3
-    #   with:
-    #     token: ${{ secrets.CODECOV_TOKEN }}
-    #     file: test/UnitTest/lcov.info
-
+    - name: Upload coverage reports to Codecov
+      uses: codecov/codecov-action@v3
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+        file: test/UnitTest/lcov.info
     
-    # - name: Install Stryker.NET
-    #   run: dotnet tool install -g dotnet-stryker
+    - name: Install Stryker.NET
+      run: dotnet tool install -g dotnet-stryker
 
-    # - name: Run Stryker.NET
-    #   run: dotnet stryker
+    - name: Run Stryker.NET
+      run: dotnet stryker
     
     # - name: Publish report
     #   run: |

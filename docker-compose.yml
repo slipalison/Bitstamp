@@ -4,9 +4,10 @@ services:
 
   webapi:
     #image: ${DOCKER_REGISTRY-}webapi
-    build:
-      context: .
-      dockerfile: src/WebApi/Dockerfile
+    image: slipalison/bitstamp-api-slipalison
+    #build:
+    #  context: .
+    #  dockerfile: src/WebApi/Dockerfile
     ports:
       - "8080:80"
       - "8085:443"
@@ -26,9 +27,10 @@ services:
   hostedservices:
     restart: always
     #image: ${DOCKER_REGISTRY-}HostedServicesClient
-    build:
-      context: .
-      dockerfile: src/HostedServicesClient/Dockerfile
+    image: slipalison/bitstamp-host-slipalison
+    #build:
+    #  context: .
+    #  dockerfile: src/HostedServicesClient/Dockerfile
     ports:
       - "8082:80"
       - "8087:443"
