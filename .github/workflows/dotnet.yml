@@ -35,13 +35,6 @@ jobs:
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
         file: test/UnitTest/lcov.info
-    
-    - name: Install Stryker.NET
-      run: dotnet tool install -g dotnet-stryker
-
-    - name: Run Stryker.NET
-      run: dotnet stryker
-
 
     - name: Docker Login
       uses: docker/login-action@v2.1.0
@@ -68,15 +61,10 @@ jobs:
         push: true
         tags: slipalison/bitstamp-host-slipalison:latest
 
-    #- name: Render Deployment
-    #  # You may pin to the exact commit or the version.
-    #  # uses: sws2apps/render-deployment@5c3274c95919e875da2e6d8af0f93489d1d6e3e6
-    #  uses: sws2apps/render-deployment@v1.2.0
-    #  with:
-    #    # The Service ID of your Render service
-    #    serviceId: bitstamp-api
-    #    # Your personal API key to interact with Render
-    #    apiKey: ${{ secrets.RENDER_API_KEY }}
-    #    # Specify if having multiple deployment is allowed
+    - name: Install Stryker.NET
+      run: dotnet tool install -g dotnet-stryker
+
+    - name: Run Stryker.NET
+      run: dotnet stryker
     
 
