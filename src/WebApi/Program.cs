@@ -33,31 +33,32 @@ public class Program
 
     private static LoggerConfiguration NewMethod(HostBuilderContext context, LoggerConfiguration configuration)
     {
-
-        var elk = new ElasticsearchSinkOptions()
-        {
-            AutoRegisterTemplate = true,
-            AutoRegisterTemplateVersion = AutoRegisterTemplateVersion.ESv7,
-            IndexFormat = "webapi-{0:yyyy.MM}"
-        };
-
-
         if (!string.IsNullOrEmpty(context.Configuration["Elastic"]))
-            elk = new ElasticsearchSinkOptions(new Uri(context.Configuration["Elastic"]!))
-            {
-                AutoRegisterTemplate = true,
-                AutoRegisterTemplateVersion = AutoRegisterTemplateVersion.ESv7,
-                IndexFormat = "webapi-{0:yyyy.MM}"
-            };
-
-
-        return configuration
+            return configuration
                     .MinimumLevel.Verbose()
                     .Enrich.FromLogContext()
                     .Enrich.WithMachineName()
                     .WriteTo.Debug()
                     .WriteTo.Console(new JsonFormatter())
-                    .WriteTo.Elasticsearch(elk);
+                    .WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri(context.Configuration["Elastic"]!))
+                    {
+                        AutoRegisterTemplate = true,
+                        AutoRegisterTemplateVersion = AutoRegisterTemplateVersion.ESv7,
+                        IndexFormat = "webapi-{0:yyyy.MM}"
+                    });
+
+        return configuration
+            .MinimumLevel.Verbose()
+            .Enrich.FromLogContext()
+            .Enrich.WithMachineName()
+            .WriteTo.Debug()
+            .WriteTo.Console(new JsonFormatter())
+            .WriteTo.Elasticsearch(new ElasticsearchSinkOptions()
+            {
+                AutoRegisterTemplate = true,
+                AutoRegisterTemplateVersion = AutoRegisterTemplateVersion.ESv7,
+                IndexFormat = "webapi-{0:yyyy.MM}"
+            });
 
     }
 }
