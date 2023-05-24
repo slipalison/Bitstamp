@@ -25,7 +25,16 @@ public class Program
             .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); })
             .UseSerilog((context, configuration) =>
             {
-                configuration
+                NewMethod(context, configuration)
+                                    .Enrich.WithProperty("Environment", Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")!)
+                                    .ReadFrom.Configuration(context.Configuration);
+            });
+    }
+
+    private static LoggerConfiguration NewMethod(HostBuilderContext context, LoggerConfiguration configuration)
+    {
+        if (!string.IsNullOrEmpty(context.Configuration["Elastic"]))
+            return configuration
                     .MinimumLevel.Verbose()
                     .Enrich.FromLogContext()
                     .Enrich.WithMachineName()
@@ -36,9 +45,20 @@ public class Program
                         AutoRegisterTemplate = true,
                         AutoRegisterTemplateVersion = AutoRegisterTemplateVersion.ESv7,
                         IndexFormat = "webapi-{0:yyyy.MM}"
-                    })
-                    .Enrich.WithProperty("Environment", Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")!)
-                    .ReadFrom.Configuration(context.Configuration);
+                    });
+
+        return configuration
+            .MinimumLevel.Verbose()
+            .Enrich.FromLogContext()
+            .Enrich.WithMachineName()
+            .WriteTo.Debug()
+            .WriteTo.Console(new JsonFormatter())
+            .WriteTo.Elasticsearch(new ElasticsearchSinkOptions()
+            {
+                AutoRegisterTemplate = true,
+                AutoRegisterTemplateVersion = AutoRegisterTemplateVersion.ESv7,
+                IndexFormat = "webapi-{0:yyyy.MM}"
             });
+
     }
 }
