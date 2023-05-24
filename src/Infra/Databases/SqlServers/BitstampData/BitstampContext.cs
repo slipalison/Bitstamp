@@ -25,8 +25,8 @@ public class BitstampContext : DbContext
     {
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(EthBidEntityConfiguration).Assembly);
 
-        modelBuilder.Ignore<Metric>();
-        modelBuilder.Ignore<OrderItem>();
+        //modelBuilder.Ignore<Metric>();
+        //modelBuilder.Ignore<OrderItem>();
         modelBuilder.Entity<Metric>().HasNoKey();
         modelBuilder.Entity<OrderItem>().HasNoKey();
     }
