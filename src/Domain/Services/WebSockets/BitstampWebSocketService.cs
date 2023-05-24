@@ -63,7 +63,6 @@ public abstract class BitstampWebSocket<T> : IOrderBookService, IDisposable wher
         var message = Encoding.UTF8.GetString(_buffer.Span.Slice(0, result.Count));
         if (!string.IsNullOrEmpty(message) && TryParse(message, out var resultJson) && resultJson!.Event == "data")
         {
-            _logger.LogInformation(message);
             await ExecuteOrderBook(resultJson, _cancellationToken);
         }
     }
