@@ -13,7 +13,9 @@ services:
       - "8085:443"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+      - database=post
       - ConnectionStrings__SqlServer=Server=sqlserver,1433;Database=Bitstamp;User Id=sa;Password=SqlServer2019!;Encrypt=False;
+      - ConnectionStrings__postgre=User ID=bitstamp;Password=HZJqcT4It3liQC4O1H1p3cGUwhlX453U;Host=dpg-chn0kvm4dad21k1d9vn0-a.oregon-postgres.render.com;Port=5432;Database=bitstamp;Pooling=true;
       - Elastic=http://elasticsearch:9200
       - RabbitMq__hosts=["rabbit:5672"]
       - ELASTICSEARCH_NODE_URIS=http://elasticsearch:9200
@@ -36,7 +38,9 @@ services:
       - "8087:443"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+      - database=post
       - ConnectionStrings__SqlServer=Server=sqlserver,1433;Database=Bitstamp;User Id=sa;Password=SqlServer2019!;Encrypt=False;
+      - ConnectionStrings__postgre=User ID=bitstamp;Password=HZJqcT4It3liQC4O1H1p3cGUwhlX453U;Host=dpg-chn0kvm4dad21k1d9vn0-a.oregon-postgres.render.com;Port=5432;Database=bitstamp;Pooling=true;
       - Elastic=http://elasticsearch:9200
       - RabbitMq__hosts=["rabbit:5672"]
       - ELASTICSEARCH_NODE_URIS=http://elasticsearch:9200
