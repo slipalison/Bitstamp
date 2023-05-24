@@ -24,7 +24,7 @@ public abstract class BitstampRepository<TEntity> : IBitstampRepository where TE
         var database = _context.GetService<IDatabaseProvider>().Name;
 
         _isPostgre = database.Contains("PostgreSQL");
-        
+
 
     }
 
@@ -61,7 +61,7 @@ public abstract class BitstampRepository<TEntity> : IBitstampRepository where TE
                     ""Microtimestamp"",
                     ""Price"",
                     ""Amount""
-                             FROM ""BtcBids""
+                             FROM ""{tableName}""
                              ORDER BY ""InsertAt"" DESC
                              LIMIT 100)
                 SELECT MIN(""Price"")                                                                 AS minPrice,
@@ -69,7 +69,7 @@ public abstract class BitstampRepository<TEntity> : IBitstampRepository where TE
                        AVG(""Amount"")                                                                AS mediaAmount,
                        AVG(""Price"")                                                                 AS mediaPrice,
                        (SELECT AVG(""Price"") AS mediaPrice5
-                        FROM ""BtcBids""
+                        FROM ""{tableName}""
                         WHERE ""InsertAt"" >= (SELECT MAX(""InsertAt"") - INTERVAL '5 seconds' FROM cte)) AS mediaPrice5
                 FROM cte
                 LIMIT 1" :
@@ -114,7 +114,15 @@ public abstract class BitstampRepository<TEntity> : IBitstampRepository where TE
         var tableName = _context.Model.FindEntityType(typeof(TEntity))!.GetTableName();
         var ascOrDesc = tableName!.Contains("Bid", StringComparison.InvariantCultureIgnoreCase) ? "desc" : "asc";
 
-        var cteQuery = await _context.OrderItems.FromSqlRaw(
+
+        var query = _isPostgre ? $@"SELECT ""Amount"", ""Price"", ""InsertAt""
+        FROM (
+            SELECT ""InsertAt"", ""Price"", ""Amount"",
+                SUM(""Amount"") OVER (ORDER BY ""Amount"" ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) AS running_sum
+            FROM ""{tableName}""
+        ) AS subquery
+        WHERE running_sum <= {amount}
+        ORDER BY ""Price"" ASC, ""InsertAt"" DESC" :
         $@"SELECT Amount, Price, InsertAt
         FROM (
             SELECT InsertAt, Price, Amount,
@@ -123,7 +131,9 @@ public abstract class BitstampRepository<TEntity> : IBitstampRepository where TE
         ) AS subquery
         WHERE running_sum <= {amount}
         ORDER BY Price {ascOrDesc}, InsertAt DESC
-        OPTION (RECOMPILE)").AsNoTracking().ToListAsync(cancellationToken);
+        OPTION (RECOMPILE)";
+
+        var cteQuery = await _context.OrderItems.FromSqlRaw(query).AsNoTracking().ToListAsync(cancellationToken);
 
         return cteQuery;
     }
