@@ -21,15 +21,19 @@ public class LoggingMiddleware
 
     public async Task Invoke(HttpContext context)
     {
-        if (context.Request.Path.Value!.Contains("swagger"))
-        {
-            await _next(context);
-        }
-        else
-        {
-            await LogRequest(context);
-            await LogResponse(context);
-        }
+        using var _ = LogContext.PushProperty("CorrelationID", context.Request.Headers["X-Correlation-ID"]);
+
+        await _next(context);
+
+        //if (context.Request.Path.Value!.Contains("swagger"))
+        //{
+        //    await _next(context);
+        //}
+        //else
+        //{
+        //    await LogRequest(context);
+        //    await LogResponse(context);
+        //}
     }
 
     private async Task LogResponse(HttpContext context)
@@ -39,8 +43,7 @@ public class LoggingMiddleware
         context.Response.Body = responseBody;
         await _next(context);
         context.Response.Body.Seek(0, SeekOrigin.Begin);
-
-        using var t = LogContext.PushProperty("X-Correlation-ID", context.Request.Headers["X-Correlation-ID"]);
+                
         _logger.LogInformation(
             "Http Response Information | Schema:{RequestScheme} Method:{Method} Host:{RequestHost} Path:{RequestPath} QueryString: {RequestQueryString} Headers:{Join}",
             context.Request.Scheme, context.Request.Host, context.Request.Method, context.Request.Path,
