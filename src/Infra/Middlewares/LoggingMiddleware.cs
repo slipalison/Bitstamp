@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Domain.Services;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.IO;
 using Serilog.Context;
@@ -21,7 +23,8 @@ public class LoggingMiddleware
 
     public async Task Invoke(HttpContext context)
     {
-        using var _ = LogContext.PushProperty("CorrelationID", context.Request.Headers["X-Correlation-ID"]);
+        using var _ = LogContext.PushProperty("CorrelationID", context.Request.Headers["X-Correlation-ID"].ToString()
+            ?? context.RequestServices.GetRequiredService<ICorrelationContextService>().GetCorrelationId().ToString());
 
         await _next(context);
 
