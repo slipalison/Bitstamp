@@ -3,8 +3,8 @@ using System;
 using Infra.Databases.SqlServers.BitstampData;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
@@ -18,29 +18,29 @@ namespace Infra.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "7.0.5")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128);
+                .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
-            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+            NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
             modelBuilder.Entity("Domain.Models.AggregationBook.BtcAsk", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<decimal>("Amount")
                         .HasPrecision(18, 8)
-                        .HasColumnType("decimal(18,8)");
+                        .HasColumnType("numeric(18,8)");
 
                     b.Property<DateTimeOffset>("InsertAt")
-                        .HasColumnType("datetimeoffset");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<long>("Microtimestamp")
                         .HasColumnType("bigint");
 
                     b.Property<decimal>("Price")
                         .HasPrecision(18, 2)
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("numeric(18,2)");
 
                     b.Property<long>("Timestamp")
                         .HasColumnType("bigint");
@@ -50,6 +50,8 @@ namespace Infra.Migrations
                     b.HasIndex("Amount");
 
                     b.HasIndex("InsertAt");
+
+                    b.HasIndex("Microtimestamp");
 
                     b.HasIndex("Price");
 
@@ -63,21 +65,21 @@ namespace Infra.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<decimal>("Amount")
                         .HasPrecision(18, 8)
-                        .HasColumnType("decimal(18,8)");
+                        .HasColumnType("numeric(18,8)");
 
                     b.Property<DateTimeOffset>("InsertAt")
-                        .HasColumnType("datetimeoffset");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<long>("Microtimestamp")
                         .HasColumnType("bigint");
 
                     b.Property<decimal>("Price")
                         .HasPrecision(18, 2)
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("numeric(18,2)");
 
                     b.Property<long>("Timestamp")
                         .HasColumnType("bigint");
@@ -87,6 +89,8 @@ namespace Infra.Migrations
                     b.HasIndex("Amount");
 
                     b.HasIndex("InsertAt");
+
+                    b.HasIndex("Microtimestamp");
 
                     b.HasIndex("Price");
 
@@ -100,21 +104,21 @@ namespace Infra.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<decimal>("Amount")
                         .HasPrecision(18, 8)
-                        .HasColumnType("decimal(18,8)");
+                        .HasColumnType("numeric(18,8)");
 
                     b.Property<DateTimeOffset>("InsertAt")
-                        .HasColumnType("datetimeoffset");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<long>("Microtimestamp")
                         .HasColumnType("bigint");
 
                     b.Property<decimal>("Price")
                         .HasPrecision(18, 2)
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("numeric(18,2)");
 
                     b.Property<long>("Timestamp")
                         .HasColumnType("bigint");
@@ -124,6 +128,8 @@ namespace Infra.Migrations
                     b.HasIndex("Amount");
 
                     b.HasIndex("InsertAt");
+
+                    b.HasIndex("Microtimestamp");
 
                     b.HasIndex("Price");
 
@@ -137,21 +143,21 @@ namespace Infra.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<decimal>("Amount")
                         .HasPrecision(18, 8)
-                        .HasColumnType("decimal(18,8)");
+                        .HasColumnType("numeric(18,8)");
 
                     b.Property<DateTimeOffset>("InsertAt")
-                        .HasColumnType("datetimeoffset");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<long>("Microtimestamp")
                         .HasColumnType("bigint");
 
                     b.Property<decimal>("Price")
                         .HasPrecision(18, 2)
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("numeric(18,2)");
 
                     b.Property<long>("Timestamp")
                         .HasColumnType("bigint");
@@ -162,6 +168,8 @@ namespace Infra.Migrations
 
                     b.HasIndex("InsertAt");
 
+                    b.HasIndex("Microtimestamp");
+
                     b.HasIndex("Price");
 
                     b.HasIndex("Amount", "Price")
@@ -170,38 +178,77 @@ namespace Infra.Migrations
                     b.ToTable("EthBids");
                 });
 
+            modelBuilder.Entity("Domain.Models.AggregationMetrics.Metric", b =>
+                {
+                    b.Property<decimal?>("MaxPrice")
+                        .HasColumnType("numeric")
+                        .HasAnnotation("Relational:JsonPropertyName", "maxPrice");
+
+                    b.Property<decimal?>("MediaAmount")
+                        .HasColumnType("numeric")
+                        .HasAnnotation("Relational:JsonPropertyName", "mediaAmount");
+
+                    b.Property<decimal?>("MediaPrice")
+                        .HasColumnType("numeric")
+                        .HasAnnotation("Relational:JsonPropertyName", "mediaPrice");
+
+                    b.Property<decimal?>("MediaPrice5")
+                        .HasColumnType("numeric")
+                        .HasAnnotation("Relational:JsonPropertyName", "mediaPrice5");
+
+                    b.Property<decimal?>("MinPrice")
+                        .HasColumnType("numeric")
+                        .HasAnnotation("Relational:JsonPropertyName", "minPrice");
+
+                    b.ToTable("Metrics");
+                });
+
+            modelBuilder.Entity("Domain.Models.AggregationMetrics.OrderItem", b =>
+                {
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("numeric");
+
+                    b.Property<DateTimeOffset>("InsertAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("numeric");
+
+                    b.ToTable("OrderItems");
+                });
+
             modelBuilder.Entity("Domain.Models.AggregationOrder.Order", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<decimal>("Amount")
                         .HasPrecision(18, 8)
-                        .HasColumnType("decimal(18,8)");
+                        .HasColumnType("numeric(18,8)");
 
                     b.Property<decimal>("AmountTotal")
                         .HasPrecision(18, 8)
-                        .HasColumnType("decimal(18,8)");
+                        .HasColumnType("numeric(18,8)");
 
                     b.Property<string>("Crypto")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<DateTimeOffset>("InsertAt")
-                        .HasColumnType("datetimeoffset");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<decimal>("Price")
                         .HasPrecision(18, 2)
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("numeric(18,2)");
 
                     b.Property<string>("Stock")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Type")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 

@@ -148,11 +148,16 @@
         });
 
         const selectType = document.getElementById("type");
+        var host = "https://bitstamp-api.onrender.com/api/V1/Order"
+        if (location.hostname === 'localhost') {
+            host = "http://localhost:8080/api/V1/Order"
+        } 
 
         const btnComprar = document.getElementById("comprar");
         btnComprar.addEventListener("click", function () {
             var settings = {
-                "url": "http://localhost:8080/api/V1/Order/buy",
+                //"url": "http://localhost:8080/api/V1/Order/buy",
+                "url": `${host}/buy`,
                 "method": "POST",
                 "timeout": 0,
                 "headers": {
@@ -171,7 +176,8 @@
         const btnVender = document.getElementById("vender");
         btnVender.addEventListener("click", function () {
             var settings = {
-                "url": "http://localhost:8080/api/V1/Order/sell",
+                //"url": "http://localhost:8080/api/V1/Order/sell",
+                "url": `${host}/sell`,
                 "method": "POST",
                 "timeout": 0,
                 "headers": {

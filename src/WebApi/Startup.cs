@@ -1,9 +1,11 @@
-﻿using Infra;
+﻿using Domain.Services;
+using Infra;
 using Infra.ConfigsExtensions;
 using Infra.Databases.SqlServers.BitstampData.Extensions;
 using Infra.Middlewares;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.OpenApi.Models;
+using Serilog;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -56,6 +58,21 @@ public class Startup : BaseStartup
             .AllowAnyHeader())
             .UseMiddleware<CorrelationMiddleware>()
             .UseMiddleware<LoggingMiddleware>();
+
+
+        //app.UseSerilogRequestLogging(options =>
+        //{
+
+        //    options.EnrichDiagnosticContext = (diagnosticContext, httpContext) =>
+        //    {
+
+        //        var correlation = httpContext.RequestServices.GetRequiredService<ICorrelationContextService>();
+
+        //        var correlationId = httpContext.Request.Headers["X-Correlation-ID"].FirstOrDefault() ?? correlation.GetCorrelationId().ToString();
+
+        //        diagnosticContext.Set("CorrelationId", correlationId);
+        //    };
+        //});
 
         // TODO: Isso é só para testes e apresentação, hambiente produtivo isso é contra indicado
         app.ExecuteMigartions();

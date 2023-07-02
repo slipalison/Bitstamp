@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Options;
 
 namespace Infra.Databases.SqlServers.BitstampData.Extensions;
 
@@ -13,10 +14,24 @@ public static class IncludeDbConnection
     public static IServiceCollection AddDbContext(this IServiceCollection serviceCollection,
         IConfiguration configuration)
     {
-        serviceCollection
-            .AddDbContext<BitstampContext>(options =>
-                options.UseSqlServer(configuration.GetConnectionString("SqlServer")), ServiceLifetime.Transient)
-            .AddRepositories();
+
+        var isSql = configuration["database"] == "sql";
+
+        if (isSql)
+        {
+            serviceCollection
+                .AddDbContext<BitstampContext>(options =>
+                options.UseSqlServer(configuration.GetConnectionString("SqlServer")), ServiceLifetime.Transient);
+
+        }
+        else
+        {
+            serviceCollection
+                    .AddDbContext<BitstampContext>(options =>
+                options.UseNpgsql(configuration.GetConnectionString("postgre")), ServiceLifetime.Transient);
+
+        }
+        serviceCollection.AddRepositories();
 
         return serviceCollection;
     }

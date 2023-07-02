@@ -1,0 +1,7 @@
+name: bitstamp-api
+docker:
+  image: slipalison/bitstamp-api-slipalison:latest
+env:
+  ASPNETCORE_ENVIRONMENT: Development
+  database: post
+  ConnectionStrings__postgre: User ID=bitstamp;Password=x;Host=dpg-chn0kvm4dad21k1d9vn0-a;Port=5432;Database=bitstamp;Pooling=true;

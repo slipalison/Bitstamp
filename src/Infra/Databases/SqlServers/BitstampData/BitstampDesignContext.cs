@@ -9,8 +9,10 @@ public class BitstampDesignContext : IDesignTimeDbContextFactory<BitstampContext
     {
         var optionsBuilder = new DbContextOptionsBuilder<BitstampContext>();
 
-        optionsBuilder.UseSqlServer(
-            "Data Source=(localdb)\\MsSqlLocalDb;initial catalog=ProductsDbDev;Integrated Security=True; MultipleActiveResultSets=True");
+        //optionsBuilder.UseSqlServer(
+        //    "Data Source=(localdb)\\MsSqlLocalDb;initial catalog=ProductsDbDev;Integrated Security=True; MultipleActiveResultSets=True");
+
+        optionsBuilder.UseNpgsql("User ID=root;Password=myPassword;Host=localhost;Port=5432;Database=myDataBase;Pooling=true;Min Pool Size=0;Max Pool Size=100;Connection Lifetime=0;");
 
         return new BitstampContext(optionsBuilder.Options);
     }

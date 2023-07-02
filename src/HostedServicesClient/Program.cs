@@ -2,6 +2,7 @@ using Serilog;
 using Serilog.Formatting.Json;
 using Serilog.Sinks.Elasticsearch;
 using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 
 namespace HostedServicesClient;
 
@@ -17,11 +18,23 @@ public class Program
 
     private static IHostBuilder CreateHostBuilder(string[] args)
     {
+        CultureInfo.DefaultThreadCurrentCulture = new CultureInfo("en-US");
+        CultureInfo.DefaultThreadCurrentUICulture = new CultureInfo("en-US");
+
         return Host.CreateDefaultBuilder(args)
             .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); })
             .UseSerilog((context, configuration) =>
             {
-                configuration
+                NewMethod(context, configuration)
+                                    .Enrich.WithProperty("Environment", Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")!)
+                                    .ReadFrom.Configuration(context.Configuration);
+            });
+    }
+
+    private static LoggerConfiguration NewMethod(HostBuilderContext context, LoggerConfiguration configuration)
+    {
+        if (!string.IsNullOrEmpty(context.Configuration["Elastic"]))
+            return configuration
                     .MinimumLevel.Verbose()
                     .Enrich.FromLogContext()
                     .Enrich.WithMachineName()
@@ -32,9 +45,20 @@ public class Program
                         AutoRegisterTemplate = true,
                         AutoRegisterTemplateVersion = AutoRegisterTemplateVersion.ESv7,
                         IndexFormat = "baseapi-{0:yyyy.MM}"
-                    })
-                    .Enrich.WithProperty("Environment", Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")!)
-                    .ReadFrom.Configuration(context.Configuration);
+                    });
+
+        return configuration
+            .MinimumLevel.Verbose()
+            .Enrich.FromLogContext()
+            .Enrich.WithMachineName()
+            .WriteTo.Debug()
+            .WriteTo.Console(new JsonFormatter())
+            .WriteTo.Elasticsearch(new ElasticsearchSinkOptions()
+            {
+                AutoRegisterTemplate = true,
+                AutoRegisterTemplateVersion = AutoRegisterTemplateVersion.ESv7,
+                IndexFormat = "baseapi-{0:yyyy.MM}"
             });
+
     }
 }

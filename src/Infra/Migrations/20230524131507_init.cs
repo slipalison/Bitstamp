@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -14,12 +15,12 @@ namespace Infra.Migrations
                 name: "BtcAsks",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    InsertAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    InsertAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     Timestamp = table.Column<long>(type: "bigint", nullable: false),
                     Microtimestamp = table.Column<long>(type: "bigint", nullable: false),
-                    Price = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
-                    Amount = table.Column<decimal>(type: "decimal(18,8)", precision: 18, scale: 8, nullable: false)
+                    Price = table.Column<decimal>(type: "numeric(18,2)", precision: 18, scale: 2, nullable: false),
+                    Amount = table.Column<decimal>(type: "numeric(18,8)", precision: 18, scale: 8, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -30,12 +31,12 @@ namespace Infra.Migrations
                 name: "BtcBids",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    InsertAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    InsertAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     Timestamp = table.Column<long>(type: "bigint", nullable: false),
                     Microtimestamp = table.Column<long>(type: "bigint", nullable: false),
-                    Price = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
-                    Amount = table.Column<decimal>(type: "decimal(18,8)", precision: 18, scale: 8, nullable: false)
+                    Price = table.Column<decimal>(type: "numeric(18,2)", precision: 18, scale: 2, nullable: false),
+                    Amount = table.Column<decimal>(type: "numeric(18,8)", precision: 18, scale: 8, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -46,12 +47,12 @@ namespace Infra.Migrations
                 name: "EthAsks",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    InsertAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    InsertAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     Timestamp = table.Column<long>(type: "bigint", nullable: false),
                     Microtimestamp = table.Column<long>(type: "bigint", nullable: false),
-                    Price = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
-                    Amount = table.Column<decimal>(type: "decimal(18,8)", precision: 18, scale: 8, nullable: false)
+                    Price = table.Column<decimal>(type: "numeric(18,2)", precision: 18, scale: 2, nullable: false),
+                    Amount = table.Column<decimal>(type: "numeric(18,8)", precision: 18, scale: 8, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -62,12 +63,12 @@ namespace Infra.Migrations
                 name: "EthBids",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    InsertAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    InsertAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     Timestamp = table.Column<long>(type: "bigint", nullable: false),
                     Microtimestamp = table.Column<long>(type: "bigint", nullable: false),
-                    Price = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
-                    Amount = table.Column<decimal>(type: "decimal(18,8)", precision: 18, scale: 8, nullable: false)
+                    Price = table.Column<decimal>(type: "numeric(18,2)", precision: 18, scale: 2, nullable: false),
+                    Amount = table.Column<decimal>(type: "numeric(18,8)", precision: 18, scale: 8, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -75,17 +76,43 @@ namespace Infra.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Metrics",
+                columns: table => new
+                {
+                    MinPrice = table.Column<decimal>(type: "numeric", nullable: true),
+                    MaxPrice = table.Column<decimal>(type: "numeric", nullable: true),
+                    MediaAmount = table.Column<decimal>(type: "numeric", nullable: true),
+                    MediaPrice = table.Column<decimal>(type: "numeric", nullable: true),
+                    MediaPrice5 = table.Column<decimal>(type: "numeric", nullable: true)
+                },
+                constraints: table =>
+                {
+                });
+
+            migrationBuilder.CreateTable(
+                name: "OrderItems",
+                columns: table => new
+                {
+                    Amount = table.Column<decimal>(type: "numeric", nullable: false),
+                    Price = table.Column<decimal>(type: "numeric", nullable: false),
+                    InsertAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Orders",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Amount = table.Column<decimal>(type: "decimal(18,8)", precision: 18, scale: 8, nullable: false),
-                    Crypto = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Stock = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Type = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Price = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
-                    AmountTotal = table.Column<decimal>(type: "decimal(18,8)", precision: 18, scale: 8, nullable: false),
-                    InsertAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Price = table.Column<decimal>(type: "numeric(18,2)", precision: 18, scale: 2, nullable: false),
+                    AmountTotal = table.Column<decimal>(type: "numeric(18,8)", precision: 18, scale: 8, nullable: false),
+                    InsertAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    Amount = table.Column<decimal>(type: "numeric(18,8)", precision: 18, scale: 8, nullable: false),
+                    Crypto = table.Column<string>(type: "text", nullable: false),
+                    Stock = table.Column<string>(type: "text", nullable: false),
+                    Type = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -109,6 +136,11 @@ namespace Infra.Migrations
                 column: "InsertAt");
 
             migrationBuilder.CreateIndex(
+                name: "IX_BtcAsks_Microtimestamp",
+                table: "BtcAsks",
+                column: "Microtimestamp");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_BtcAsks_Price",
                 table: "BtcAsks",
                 column: "Price");
@@ -128,6 +160,11 @@ namespace Infra.Migrations
                 name: "IX_BtcBids_InsertAt",
                 table: "BtcBids",
                 column: "InsertAt");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BtcBids_Microtimestamp",
+                table: "BtcBids",
+                column: "Microtimestamp");
 
             migrationBuilder.CreateIndex(
                 name: "IX_BtcBids_Price",
@@ -151,6 +188,11 @@ namespace Infra.Migrations
                 column: "InsertAt");
 
             migrationBuilder.CreateIndex(
+                name: "IX_EthAsks_Microtimestamp",
+                table: "EthAsks",
+                column: "Microtimestamp");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_EthAsks_Price",
                 table: "EthAsks",
                 column: "Price");
@@ -170,6 +212,11 @@ namespace Infra.Migrations
                 name: "IX_EthBids_InsertAt",
                 table: "EthBids",
                 column: "InsertAt");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_EthBids_Microtimestamp",
+                table: "EthBids",
+                column: "Microtimestamp");
 
             migrationBuilder.CreateIndex(
                 name: "IX_EthBids_Price",
@@ -196,6 +243,12 @@ namespace Infra.Migrations
 
             migrationBuilder.DropTable(
                 name: "EthBids");
+
+            migrationBuilder.DropTable(
+                name: "Metrics");
+
+            migrationBuilder.DropTable(
+                name: "OrderItems");
 
             migrationBuilder.DropTable(
                 name: "Orders");
